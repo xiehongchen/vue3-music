@@ -1,5 +1,6 @@
 <template>
   <div class="header">
+   <LButton>ann</LButton>
     <div class="header-left">
       <div class="header-left-buttons">
         <div class="button red"></div>

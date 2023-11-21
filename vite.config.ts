@@ -9,6 +9,9 @@ export default defineConfig(({ mode }) => {
     plugins: [
       vue(),
       Components({
+        // 按需引入
+        dts: true,
+        dirs: ["src/base"],
         resolvers:[
           VantResolver()
         ]
@@ -17,6 +20,15 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@': '/src',
+      },
+    },
+    //scss全局变量一个配置
+    css: {
+      preprocessorOptions: {
+        scss: {
+          javascriptEnabled: true,
+          additionalData: '@import "./src/style/variable.scss";',
+        },
       },
     },
   }

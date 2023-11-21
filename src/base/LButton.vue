@@ -1,5 +1,5 @@
 <template>
-  <div class="l-button" @click="onClick">
+  <div class="l-button" @click="onClick" :style="type">
     <slot></slot>
   </div>
 </template>
@@ -8,7 +8,9 @@
 defineProps({
   type: {
     type: String,
-    default: 'common'
+    default: () => ({
+      'borderRadius': '10px'
+    })
   }
 })
 const emit = defineEmits(['clickHandle'])
@@ -22,5 +24,7 @@ const onClick = (e: Event) => {
   display: inline-block;
   padding: 5px 16px;
   border: 1px solid var(--button-border-color);
+  text-align: center;
+  cursor: pointer;
 }
 </style>
