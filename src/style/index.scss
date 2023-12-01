@@ -23,6 +23,11 @@ button {
     border-radius: 10px;
 }
 :root {
-  --button-border-color:#454545;
-  --button-hover-color: #8c9ce4;
+    // button
+    --button-border-color:#454545;
+    --button-hover-bg-color: #8c9ce4;
+
+    // card
+    --card-hover-bg-color: #2e2e2e;
+    --card-color-grey-shallow: #727272;
 }

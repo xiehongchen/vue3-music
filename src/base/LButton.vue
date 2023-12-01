@@ -1,16 +1,27 @@
 <template>
-  <div class="l-button" @click="onClick" :style="type">
+  <div class="l-button" @click="onClick" :class="[customClass]" :style="[customStyle]" :loading="loading"
+    :disabled="disabled">
     <slot></slot>
   </div>
 </template>
 
 <script setup lang="ts">
 defineProps({
-  type: {
+  customClass: {
     type: String,
-    default: () => ({
-      'borderRadius': '10px'
-    })
+    default: ''
+  },
+  customStyle: {
+    type: Object,
+    default: () => ({})
+  },
+  loading: {
+    type: Boolean,
+    default: false
+  },
+  disabled: {
+    type: Boolean,
+    default: false
   }
 })
 const emit = defineEmits(['clickHandle'])
@@ -26,5 +37,8 @@ const onClick = (e: Event) => {
   border: 1px solid var(--button-border-color);
   text-align: center;
   cursor: pointer;
+  &:hover {
+    background: var(--button-hover-bg-color);
+  }
 }
 </style>

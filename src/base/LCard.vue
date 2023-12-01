@@ -1,5 +1,5 @@
 <template>
-  <div class="l-card" @click="onClick">
+  <div class="l-card" @click="onClick" :class="[customClass]" :style="[customStyle]">
     <slot name="img-wrap">
       <div class="img-wrap">
         <img v-lazy="proxy.$utils.getImgUrl(img, 50)">
@@ -19,9 +19,26 @@
 import { getCurrentInstance } from 'vue';
 const { proxy } = getCurrentInstance() as any; 
 defineProps({
-  img: String,
-  name: String,
-  desc: String
+  customClass: {
+    type: String,
+    default: ''
+  },
+  customStyle: {
+    type: Object,
+    default: () => ({})
+  },
+  img: {
+    type: String,
+    default: ''
+  },
+  name: {
+    type: String,
+    default: ''
+  },
+  desc: {
+    type: String,
+    default: ''
+  },
 })
 const emit = defineEmits(['clickHandle'])
 const onClick = (e: Event) => {
@@ -34,9 +51,9 @@ const onClick = (e: Event) => {
   display: flex;
   padding: 0 4px;
   cursor: pointer;
-  // &:hover {
-  //   background-color: var();
-  // }
+  &:hover {
+    background-color: var(--card-hover-bg-color);
+  }
   .img-wrap {
     position: relative;
     @include img-wrap(50px);
@@ -52,11 +69,11 @@ const onClick = (e: Event) => {
     overflow: hidden;
     .name {
       margin-bottom: 4px;
-      font-size: 13px;
+      font-size: $font-size-13;
       @include text-ellipsis();
     }
     .desc {
-      font-size: 12px;
+      font-size: $font-size-12;
       color: #727272;
       @include text-ellipsis();
     }

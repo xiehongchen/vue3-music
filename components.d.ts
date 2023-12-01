@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     LButton: typeof import('./src/base/LButton.vue')['default']
     LCard: typeof import('./src/base/LCard.vue')['default']
+    LConfirm: typeof import('./src/base/LConfirm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
