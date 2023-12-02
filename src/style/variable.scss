@@ -1,13 +1,17 @@
 //项目提供scss全局变量
-//定义项目主题颜色
 
-$font-sizd-12: 12px;
-$font-sizd-13: 13px;
-$font-sizd-14: 14px;
-$font-sizd-15: 15px;
-$font-sizd-16: 16px;
-$font-sizd-17: 17px;
+// font
+$font-size-12: 12px;
+$font-size-13: 13px;
+$font-size-14: 14px;
+$font-size-15: 15px;
+$font-size-16: 16px;
+$font-size-17: 17px;
 
+// header
+$header-height: 50px;
+// mini-player
+$mini-player-height: 60px;
 
 @mixin text-ellipsis() {
   overflow: hidden;
