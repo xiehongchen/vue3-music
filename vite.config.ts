@@ -37,5 +37,14 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
+    server: {
+      proxy: {
+        '/api': {
+          target: 'https://mu-api.yuk0.com/',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ''),
+        },
+      },
+    },
   }
 })

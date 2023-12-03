@@ -1,12 +1,15 @@
 <template>
-  <div class="menu">
-    <user />
+  <div class="layout-menu">
+    <div class="menu-logo flex flex-col-center flex-row-center">
+      <img src="../assets/vue.svg" />
+    </div>
     <div class="menu-wrap">
-      <div v-for="(menu, index) in menusWithPlaylist" :key="index" class="menu-block">
-        <p class="menu-block-title" v-if="menu.title">{{ menu.title }}</p>
+      <div class="menu-box" v-for="menu, index in menuList" :key="index">
+        <div class="menu-title" v-if="menu.title">{{ menu.title }}</div>
         <ul class="menu-list">
-          <router-link v-for="(item, i) in menu" :key="i" :to="item.path" active-class="menu-item-active" class="menu-item" tag="li">
-            <span class="menu-title">{{ item.meta.title }}</span>
+          <router-link v-for="item, index in menu.children" :key="index" :to="item.path" active-class="menu-item-active" class="menu-item">
+            <i class="iconfont" :class="item.meta?.icon"></i>
+            <span>{{ item.meta?.title }}</span>
           </router-link>
         </ul>
       </div>
@@ -15,73 +18,68 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '@/store/user'
-import { menuRoutes } from '@/router/routes'
-
+import { menuRoutes } from "@/router/routes"
 interface menuType {
-  title?: String
   [key: string]: any
 }
-
-const user = useUserStore()
-const menus = reactive<menuType[]>([
-  {
-    type: 'root',
+const menuList = reactive<menuType[]>([])
+onMounted(() => {
+  menuList.push({
+    title: '',
     children: menuRoutes
-  }
-])
-const menusWithPlaylist = user.isLogin && user.userMenus.length ? menus.concat(user.userMenus) : menus
+  })
+  console.log('menuList', menuList)
+})
 </script>
 
 <style lang="scss" scoped>
-.menu {
-  width: 250px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+.layout-menu {
+  width: 200px;
+  // 减去 header 和 player 的高度
+  height: calc(100vh - $header-height - $player-height);
   background-color: var(--menu-bg-color);
-
+  .menu-logo {
+    height: 60px;
+    img {
+      width: 40px;
+      height: 40px;
+    }
+  }
   .menu-wrap {
-    flex: 1;
-    overflow: hidden;
-    overflow-y: auto;
-
-    .menu-block {
-      margin-bottom: 16px;
-
-      .menu-block-title {
-        font-size: $font-size-12;
-        color: var(--font-color-grey);
-        padding-left: 16px;
-        margin-bottom: 8px;
+    height: calc(100vh - $header-height - $player-height - 60px);
+    overflow-y: scroll;
+    .menu-box {
+      .menu-title {
+        height: 40px;
+        line-height: 40px;
+        padding-left: 20px;
+        color: var(--menu-text-color);
+        font-size: 14px;
       }
-
       .menu-list {
+        padding: 0;
+        margin: 0;
         .menu-item {
-          @include text-ellipsis;
-          padding: 12px 18px;
+          display: flex;
+          align-items: center;
+          height: 40px;
+          margin: 0 20px;
+          border-radius: 15px;
+          padding: 0 10px;
+          text-decoration: none;
+          color: var(--menu-text-color);
+          font-size: 14px;
           cursor: pointer;
-
           &:hover {
-            background: var(--menu-item-hover-bg-color);
+            background-color: var(--menu-item-hover-bg-color);
           }
-
           &-active {
-            color: var(--theme-colo);
-            background: var(--menu-item-hover-bg-color);
-
-            i {
-              color: var(--theme-colo);
-            }
+            background-color: var(--menu-item-active-bg-color);
+            color: var(--menu-item-active-text-color);
           }
-
           .iconfont {
-            font-size: $font-size-13;
-          }
-
-          .menu-title {
-            font-size: $font-size-13;
-            margin-left: 8px;
+            margin-right: 10px;
+            font-size: 16px;
           }
         }
       }

@@ -1,25 +1,11 @@
-<script setup lang="ts">
-import Layout from "@/layout/index.vue"
-</script>
-
 <template>
-  <Layout />
+  <router-view></router-view>
 </template>
 
-<style scoped>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  height: 100vh;
-}
+<script setup lang="ts">
 
-.button {
-  border: none;
-  cursor: pointer;
-}
+</script>
 
-.default-transition {
-  transition: all 0.4s;
-}
+<style lang="scss" scoped>
+
 </style>

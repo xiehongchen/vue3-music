@@ -1,13 +1,5 @@
 <template>
-  <div class="header flex flex-row-between">
-    <div class="left">
-      <div class="buttons">
-        <div class="mac-button red">
-          <el-icon><House /></el-icon>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="layout-header"></div>
 </template>
 
 <script setup lang="ts">
@@ -15,9 +7,8 @@
 </script>
 
 <style lang="scss" scoped>
-.header {
+.layout-header {
   height: $header-height;
-  background-color: var(--header-bg-color);
-  padding-right: 36px;
+  background-color: #242424;
 }
 </style>

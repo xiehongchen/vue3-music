@@ -1,6 +1,6 @@
 <template>
   <div>
-    <l-button>ann</l-button>
+    首页
   </div>
 </template>
 

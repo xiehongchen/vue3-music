@@ -39,53 +39,55 @@ export const menuRoutes: RouteRecordRaw[] = [
   },
 ]
 
-export const layoutCenterNames = ['discovery', 'playlists', 'songs', 'mvs']
 
 export const routes: RouteRecordRaw[] = [
   {
     path: '/',
     redirect: '/discovery',
-  },
-  {
-    path: '/playlist/:id',
-    name: 'playlist',
-    component: () => import('@/views/playlist-detail/index.vue'),
-  },
-  {
-    path: '/search/:keywords',
-    name: 'search',
-    component: () => import('@/views/search/index.vue'),
-    props: true,
+    component: () => import('@/layout/index.vue'),
     children: [
       {
-        path: '',
-        name: 'searchDefault',
-        redirect: 'songs',
+        path: '/playlist/:id',
+        name: 'playlist',
+        component: () => import('@/views/playlist-detail/index.vue'),
       },
       {
-        path: 'songs',
-        name: 'searchSongs',
-        component: () => import('@/views/search/songs.vue'),
+        path: '/search/:keywords',
+        name: 'search',
+        component: () => import('@/views/search/index.vue'),
+        props: true,
+        children: [
+          {
+            path: '',
+            name: 'searchDefault',
+            redirect: 'songs',
+          },
+          {
+            path: 'songs',
+            name: 'searchSongs',
+            component: () => import('@/views/search/songs.vue'),
+          },
+          {
+            path: 'playlists',
+            name: 'searchPlaylists',
+            component: () => import('@/views/search/playlist.vue'),
+          },
+          {
+            path: 'mvs',
+            name: 'searchMvs',
+            component: () => import('@/views/search/mvs.vue'),
+          },
+        ],
       },
       {
-        path: 'playlists',
-        name: 'searchPlaylists',
-        component: () => import('@/views/search/playlist.vue'),
+        path: '/mv/:id',
+        name: 'mv',
+        component: () => import('@/views/mv/index.vue'),
+        props: (route) =>  ({id: +route.params.id}),
       },
-      {
-        path: 'mvs',
-        name: 'searchMvs',
-        component: () => import('@/views/search/mvs.vue'),
-      },
+      ...menuRoutes,
     ],
   },
-  {
-    path: '/mv/:id',
-    name: 'mv',
-    component: () => import('@/views/mv/index.vue'),
-    props: (route) =>  ({id: +route.params.id}),
-  },
-  ...menuRoutes,
   {
     path: '/login',
     name: 'login',

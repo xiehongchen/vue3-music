@@ -10,8 +10,8 @@ $font-size-17: 17px;
 
 // header
 $header-height: 50px;
-// mini-player
-$mini-player-height: 60px;
+// player
+$player-height: 60px;
 
 @mixin text-ellipsis() {
   overflow: hidden;
