@@ -1,5 +1,5 @@
-import * as song from './song';
+import * as discovery from './discovery';
 
 export default {
-  song,
+  discovery,
 };

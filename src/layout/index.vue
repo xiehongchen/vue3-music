@@ -13,10 +13,7 @@
 import LayoutHeader from '@/layout/header.vue'
 import LayoutMenu from '@/layout/menu.vue'
 import LayoutPlayer from '@/layout/player.vue'
-import api from '@/api'
 
-onMounted(() => {
-  api.song.
 </script>
 
 <style lang="scss" scoped>

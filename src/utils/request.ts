@@ -12,7 +12,7 @@ import { ElMessage } from 'element-plus'
 //第一步:利用axios对象的create方法,去创建axios实例(其他的配置:基础路径、超时的时间)
 const request: AxiosInstance = axios.create({
   //基础路径
-  baseURL: '/api', //基础路径上会携带/api
+  baseURL: 'https://mu-api.yuk0.com/', //基础路径上会携带/api
   timeout: 5000, //超时的时间的设置
 })
 //第二步:request实例添加请求与响应拦截器
@@ -39,7 +39,7 @@ request.interceptors.response.use(
   (response: AxiosResponse) => {
     //成功回调
     //简化数据
-    return response
+    return response.data
   },
   (error: AxiosError) => {
     // console.log(error)
