@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-header"></div>
+  <div class="layout-header">头部</div>
 </template>
 
 <script setup lang="ts">
