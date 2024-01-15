@@ -101,24 +101,24 @@ function setStyle(imgIndex: number) {
     img.className = ''
     img.classList.add('img-item')
   }
-  // const classList = [
-  //   'img-item-left-4',
-  //   'img-item-left-3',
-  //   'img-item-left-2',
-  //   'img-item-left-1',
-  //   'img-item-center',
-  //   'img-item-right-1',
-  //   'img-item-right-2',
-  //   'img-item-right-3',
-  //   'img-item-right-4',
-  // ]
-    const classList = [
+  const list = [
+    'img-item-left-4',
+    'img-item-left-3',
     'img-item-left-2',
     'img-item-left-1',
     'img-item-center',
     'img-item-right-1',
     'img-item-right-2',
+    'img-item-right-3',
+    'img-item-right-4',
   ]
+  const first = {
+    5: 2,
+    7: 1,
+    9: 0
+  }[max] || 0
+  const classList = list.splice(first, 5)
+  console.log(classList)
   for (let i = 0; i < arr.length; i++) {
     const img = imgRef.value[arr[i]]
     img.classList.remove('img-item')
