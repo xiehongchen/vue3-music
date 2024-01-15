@@ -41,6 +41,7 @@ function getMouseNowLocation(event: any) {
 }
 // 鼠标移动事件
 function updateMouseNewLocation(event: any) {
+  console.log('鼠标移动事件')
   newX.value = event.pageX
   newY.value = event.pageY
   if (newX.value - x.value > 100) {
@@ -55,8 +56,8 @@ function removeUpdateLocation() {
   carouselRef.value?.removeEventListener('mousemove', updateMouseNewLocation)
 }
 
-onMounted(() => {
-  api.discovery.getBanner().then((res: any) => {
+onMounted(async () => {
+  await api.discovery.getBanner().then((res: any) => {
     imgs.value = res.banners
     imgsLength.value = res.banners.length
   })
@@ -84,12 +85,19 @@ function setStyle(imgIndex: number) {
   if (!carouselRef.value) return
   if (!imgRef.value) return
   carouselRef.value.style.display = 'none'
-  const arr = getImageIndex(imgIndex, 5, imgsLength.value)
+  let max = 0
+  if (imgsLength.value <= 10) {
+    max = 5
+  } else if (imgsLength.value <= 15) {
+    max = 7
+  } else {
+    max = 9
+  }
+  const arr = getImageIndex(imgIndex, max, imgsLength.value)
   console.log('arr', arr)
   console.log('imgsLength.value', imgsLength.value)
   for (let i = 0; i < imgsLength.value; i++) {
     const img = imgRef.value[i]
-    console.log("img", img)
     img.className = ''
     img.classList.add('img-item')
   }
@@ -104,11 +112,18 @@ function setStyle(imgIndex: number) {
   //   'img-item-right-3',
   //   'img-item-right-4',
   // ]
-  // for (let i = 0; i < arr.length; i++) {
-  //   const img = imgRef.value[arr[i]]
-  //   img.classList.remove('img-item')
-  //   img.classList.add(classList[i])
-  // }
+    const classList = [
+    'img-item-left-2',
+    'img-item-left-1',
+    'img-item-center',
+    'img-item-right-1',
+    'img-item-right-2',
+  ]
+  for (let i = 0; i < arr.length; i++) {
+    const img = imgRef.value[arr[i]]
+    img.classList.remove('img-item')
+    img.classList.add(classList[i])
+  }
   carouselRef.value.style.display = 'flex'
 }
 
@@ -162,13 +177,13 @@ function btnClick(type: string) {
 const timer = ref()
 function autoPlay() {
   clearInterval(timer.value)
-  timer.value = setInterval(() => btnClick('next'), 1000)
+  // timer.value = setInterval(() => btnClick('next'), 1000)
 }
 function stopAutoPlay() {
   clearInterval(timer.value)
 }
 // 开启自动播放
-// autoPlay()
+autoPlay()
 </script>
 
 <style lang="scss" scoped>
