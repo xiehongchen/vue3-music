@@ -1,8 +1,13 @@
 <template>
-  <div class="l-button" @click="onClick" :class="[customClass]" :style="[customStyle]" :loading="loading"
-    :disabled="disabled">
+  <button 
+    :class="[customClass]"
+    :style="[customStyle]"
+    @click="onClick"
+    :loading="loading"
+    :disabled="disabled"
+  >
     <slot></slot>
-  </div>
+  </button>
 </template>
 
 <script setup lang="ts">

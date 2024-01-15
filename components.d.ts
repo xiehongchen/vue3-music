@@ -10,6 +10,7 @@ declare module 'vue' {
     LButton: typeof import('./src/base/L-Button.vue')['default']
     LCard: typeof import('./src/base/L-Card.vue')['default']
     LIcon: typeof import('./src/base/L-Icon.vue')['default']
+    LLoading: typeof import('./src/base/L-Loading.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
