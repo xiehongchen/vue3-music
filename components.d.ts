@@ -15,6 +15,7 @@ declare module 'vue' {
     PlaylistCard: typeof import('./src/components/playlist-card.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SongCard: typeof import('./src/components/song-card.vue')['default']
     User: typeof import('./src/components/user.vue')['default']
   }
 }
