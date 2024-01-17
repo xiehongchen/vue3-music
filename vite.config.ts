@@ -1,3 +1,11 @@
+/*
+ * @Author: xiehongchen 1754581057@qq.com
+ * @Date: 2023-12-04 10:33:37
+ * @LastEditors: xiehongchen 1754581057@qq.com
+ * @LastEditTime: 2024-01-17 11:37:38
+ * @FilePath: /vue3-music/vite.config.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -17,7 +25,7 @@ export default defineConfig(({ mode }) => {
       Components({
         // 按需引入
         dts: true,
-        dirs: ["src/base"],
+        dirs: ["src/base", "src/components"],
         resolvers:[
           VantResolver()
         ]
@@ -33,8 +41,11 @@ export default defineConfig(({ mode }) => {
       preprocessorOptions: {
         scss: {
           javascriptEnabled: true,
-          additionalData: '@import "./src/style/variable.scss";',
-        },
+          additionalData: `
+            @import "./src/style/variable.scss";
+            @import "./src/style/mixin.scss";
+          `
+        }
       },
     },
     server: {
