@@ -1,13 +1,13 @@
 <template>
   <div class="new_mvs" v-if="mvs.length">
     <l-title>推荐MV</l-title>
-    <ul class="list_wrap">
-      <li v-for="mv in mvs" :key="mv.id" class="list_item">
+    <div class="list_wrap">
+      <div v-for="mv in mvs" :key="mv.id" class="list_item">
         <mv-card 
           :img="mv.picUrl">
         </mv-card>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -31,6 +31,11 @@ const getMvs = async () => {
 
 <style lang="scss" scoped>
 .new_mvs {
+  margin-bottom: 30px;
+  min-height: 300px;
   @include list(25%);
+  .list_wrap {
+    display: flex;
+  }
 }
 </style>

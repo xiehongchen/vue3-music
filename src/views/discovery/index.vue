@@ -1,16 +1,16 @@
 <template>
   <div class="discovery">
-    <!-- <Banner /> 
-    <recommend-playlists /> -->
-    <!-- <last-song /> -->
+    <Banner /> 
+    <recommend-playlists />
+    <last-song />
     <recommend-mv />
   </div>
 </template>
 
 <script setup lang="ts">
-// import Banner from './banner.vue'
-// import recommendPlaylists from './recommend-playlists.vue'
-// import lastSong from './last-song.vue';
+import Banner from './banner.vue'
+import recommendPlaylists from './recommend-playlists.vue'
+import lastSong from './last-song.vue';
 import recommendMv from './recommend-mv.vue';
 </script>
 
