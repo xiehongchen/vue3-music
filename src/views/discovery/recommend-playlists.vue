@@ -2,7 +2,7 @@
  * @Author: xiehongchen 1754581057@qq.com
  * @Date: 2024-01-16 11:53:49
  * @LastEditors: xiehongchen 1754581057@qq.com
- * @LastEditTime: 2024-01-17 11:39:06
+ * @LastEditTime: 2024-01-30 14:27:59
  * @FilePath: /vue3-music/src/views/discovery/recommend-playlists.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang='ts'>
-import api from '@/api'
+import { getPersonalized } from '@/api'
 interface listType {
   copywriter: string,
   id: string,
@@ -27,7 +27,7 @@ interface listType {
 }
 const list = ref<listType[]>([])
 onMounted(async () => {
-  const { result } = await api.discovery.getPersonalized({limit: 10}) as any
+  const { result } = await getPersonalized({limit: 10}) as any
   list.value = result
 })
 

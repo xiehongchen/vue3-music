@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import api from '@/api'
+import { getBanner } from '@/api'
 const x = ref(0)
 const y = ref(0)
 const newX = ref(0)
@@ -41,7 +41,7 @@ function getMouseNowLocation(event: any) {
 }
 // 鼠标移动事件
 function updateMouseNewLocation(event: any) {
-  console.log('鼠标移动事件')
+  // console.log('鼠标移动事件')
   newX.value = event.pageX
   newY.value = event.pageY
   if (newX.value - x.value > 100) {
@@ -57,7 +57,7 @@ function removeUpdateLocation() {
 }
 
 onMounted(async () => {
-  await api.discovery.getBanner().then((res: any) => {
+  await getBanner().then((res: any) => {
     imgs.value = res.banners
     imgsLength.value = res.banners.length
   })
@@ -80,8 +80,8 @@ onUnmounted(() => {
 })
 // 设置样式
 function setStyle(imgIndex: number) {
-  console.log("carouselRef", carouselRef.value)
-  console.log("imgRef", imgRef, imgRef.value)
+  // console.log("carouselRef", carouselRef.value)
+  // console.log("imgRef", imgRef, imgRef.value)
   if (!carouselRef.value) return
   if (!imgRef.value) return
   carouselRef.value.style.display = 'none'
@@ -94,8 +94,8 @@ function setStyle(imgIndex: number) {
     max = 9
   }
   const arr = getImageIndex(imgIndex, max, imgsLength.value)
-  console.log('arr', arr)
-  console.log('imgsLength.value', imgsLength.value)
+  // console.log('arr', arr)
+  // console.log('imgsLength.value', imgsLength.value)
   for (let i = 0; i < imgsLength.value; i++) {
     const img = imgRef.value[i]
     img.className = ''
@@ -118,7 +118,7 @@ function setStyle(imgIndex: number) {
     9: 0
   }[max] || 0
   const classList = list.splice(first, 5)
-  console.log(classList)
+  // console.log(classList)
   for (let i = 0; i < arr.length; i++) {
     const img = imgRef.value[arr[i]]
     img.classList.remove('img-item')

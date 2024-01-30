@@ -1,15 +1,15 @@
 <template>
   <div class="discovery">
-    <Banner /> 
-    <recommend-playlists />
-    <!-- <Banner2 /> -->
+    <!-- <Banner /> 
+    <recommend-playlists /> -->
+    <last-song />
   </div>
 </template>
 
 <script setup lang="ts">
-import Banner from './banner.vue'
-import recommendPlaylists from './recommend-playlists.vue'
-// import Banner2 from './banner2.vue'
+// import Banner from './banner.vue'
+// import recommendPlaylists from './recommend-playlists.vue'
+import lastSong from './last-song.vue';
 </script>
 
 <style lang="scss" scoped>

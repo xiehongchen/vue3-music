@@ -2,24 +2,48 @@
  * @Author: xiehongchen 1754581057@qq.com
  * @Date: 2024-01-17 16:26:20
  * @LastEditors: xiehongchen 1754581057@qq.com
- * @LastEditTime: 2024-01-17 16:26:34
+ * @LastEditTime: 2024-01-30 14:31:29
  * @FilePath: /vue3-music/src/components/song-card.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @Description: 歌曲卡片
+ * 认真学习每一天
 -->
 <template>
-  <div class="song-card">
-    <div class="order-wrap">
-      <span class="order">{{  }}</span>
+  <div class="song_card">
+    <div class="order_wrap">
+      <span class="order">{{ pad(order) }}</span>
+    </div>
+    <div class="img_wrap">
+      <img v-lazy="getImgUrl(img, 300)">
+    </div>
+    <div class="song_content">
+      <p class="song_name">{{ name }}</p>
+      <p class="singer">{{ artistsText }}</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { pad, getImgUrl } from '@/utils'
 
+defineProps({
+  order: {
+    type: Number
+  },
+  img: {
+    type: String,
+    default: ''
+  },
+  name: {
+    type: String
+  },
+  artistsText: {
+    type: String
+  }
+})
 </script>
 
 <style lang="scss" scoped>
-.song-card {
+.song_card {
   display: flex;
   padding: 8px;
   font-size: 12px;
@@ -32,13 +56,13 @@
   &:hover {
     background: #FFFFFF;
   }
-  .order-wrap {
+  .order_wrap {
     @include flex-center();
     width: 30px;
     margin-right: 8px;
   }
 
-  .img-wrap {
+  .img_wrap {
     position: relative;
     width: 60px;
     height: 60px;
@@ -53,16 +77,15 @@
     }
   }
 
-  .song-content {
+  .song_content {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     flex: 1;
     overflow: hidden;
 
-    .song-name {
+    .song_name {
       @include text-ellipsis;
-      color: #FFFFFF;
     }
 
     .singer {
