@@ -2,7 +2,7 @@
  * @Author: xiehongchen 1754581057@qq.com
  * @Date: 2023-12-04 10:33:37
  * @LastEditors: xiehongchen 1754581057@qq.com
- * @LastEditTime: 2024-01-30 14:37:44
+ * @LastEditTime: 2024-01-30 15:01:06
  * @FilePath: /vue3-music/src/utils/utils.ts
  * @Description: 
  * 认真学习每一天
@@ -47,4 +47,16 @@ function getSongPlayUrl(id: number) {
 }
 export function getArtistisText(artists: []) {
   return (artists || []).map((item: {name: string}) => item.name).join('/')
+}
+
+export function formatNumber(number: number) {
+  number = Number(number) || 0
+  return number > 100000 ? `${Math.round(number / 10000)}万` : number
+}
+
+export function formatTime(interval: number) {
+  interval = interval | 0
+  const minute = pad((interval / 60) | 0)
+  const second = pad(interval % 60)
+  return `${minute}:${second}`
 }

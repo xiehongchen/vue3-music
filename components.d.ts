@@ -12,6 +12,7 @@ declare module 'vue' {
     LIcon: typeof import('./src/base/L-Icon.vue')['default']
     LLoading: typeof import('./src/base/L-Loading.vue')['default']
     LTitle: typeof import('./src/base/L-Title.vue')['default']
+    MvCard: typeof import('./src/components/mv-card.vue')['default']
     PlaylistCard: typeof import('./src/components/playlist-card.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
