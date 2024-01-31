@@ -2,7 +2,7 @@
  * @Author: xiehongchen 1754581057@qq.com
  * @Date: 2023-12-04 10:33:37
  * @LastEditors: xiehongchen 1754581057@qq.com
- * @LastEditTime: 2024-01-17 11:37:38
+ * @LastEditTime: 2024-01-31 11:30:50
  * @FilePath: /vue3-music/vite.config.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -11,6 +11,8 @@ import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite';
 import { VantResolver } from '@vant/auto-import-resolver';
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -21,13 +23,15 @@ export default defineConfig(({ mode }) => {
         imports: ['vue', 'vue-router'],
         dts: 'src/auto-imports.d.ts',
         eslintrc: { enabled: true },
+        resolvers: [ElementPlusResolver()]
       }),
       Components({
         // 按需引入
         dts: true,
         dirs: ["src/base", "src/components"],
         resolvers:[
-          VantResolver()
+          VantResolver(),
+          ElementPlusResolver()
         ]
       })
     ],

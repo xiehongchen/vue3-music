@@ -2,7 +2,7 @@
  * @Author: xiehongchen 1754581057@qq.com
  * @Date: 2024-01-16 12:12:37
  * @LastEditors: xiehongchen 1754581057@qq.com
- * @LastEditTime: 2024-01-17 11:55:45
+ * @LastEditTime: 2024-01-31 11:19:09
  * @FilePath: /vue3-music/src/components/playlist-card.vue
  * @Description: 歌单卡片
 -->
@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { getCurrentInstance } from 'vue';
 const { proxy } = getCurrentInstance() as any;
-console.log('proxy', proxy)
+// console.log('proxy', proxy)
 const emit = defineEmits(['clickCard'])
 const props = defineProps({
   id: {

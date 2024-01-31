@@ -26,6 +26,7 @@ import LayoutPlayer from '@/layout/player.vue'
     .main {
       box-sizing: border-box;
       overflow: auto;
+      flex: 1;
     }
   }
 }

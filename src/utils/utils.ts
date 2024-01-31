@@ -2,7 +2,7 @@
  * @Author: xiehongchen 1754581057@qq.com
  * @Date: 2023-12-04 10:33:37
  * @LastEditors: xiehongchen 1754581057@qq.com
- * @LastEditTime: 2024-01-30 15:01:06
+ * @LastEditTime: 2024-01-31 11:08:31
  * @FilePath: /vue3-music/src/utils/utils.ts
  * @Description: 
  * 认真学习每一天
@@ -59,4 +59,8 @@ export function formatTime(interval: number) {
   const minute = pad((interval / 60) | 0)
   const second = pad(interval % 60)
   return `${minute}:${second}`
+}
+
+export function getPageOffset(page: number, limit: number) {
+  return page * limit
 }

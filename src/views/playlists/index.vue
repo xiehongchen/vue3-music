@@ -1,13 +1,78 @@
 <template>
-  <div>
-    推荐歌单
+  <div class="play_list" ref="playList">
+    <div class="play_list_top" v-if="topPlaylist.id">
+      <top-playlist-card 
+        :desc="topPlaylist.description"
+        :id="topPlaylist.id"
+        :img="topPlaylist.coverImgUrl"
+        :name="topPlaylist.name">
+      </top-playlist-card>
+    </div>
+    <div class="tabs">
+
+    </div>
+    <div class="play_list_card">
+      <playlist-card
+        v-for="item in playlists"
+        :key="item.id"
+        :img="item.coverImgUrl"
+        :name="item.name"
+        :desc="`播放量：${formatNumber(item.playCount)}`">
+      </playlist-card>
+    </div>
+    <el-pagination ayout="prev, pager, next" :page-size="pagination.pageSize" :total="pagination.total"></el-pagination>
   </div>
 </template>
 
 <script setup lang="ts">
+import { getPlaylists, getTopPlaylists } from '@/api'
+import { getPageOffset, formatNumber } from '@/utils';
+const tabs = reactive(["全部","欧美","华语","流行","说唱","摇滚","民谣","电子","轻音乐","影视原声","ACG","怀旧","治愈","旅行"])
+const state = reactive({
+  topPlaylist: {} as any,
+  playlists: [] as any[]
+})
+const pagination = reactive({
+  currentPage: 0,
+  pageSize: 50,
+  total: 0
+})
+const topPlaylist = computed(() => state.topPlaylist)
+const playlists = computed(() => state.playlists)
+const activeTabIndex = ref(0)
 
+onMounted(() => {
+  getTopPlaylist()
+  getPlaylist()
+})
+const getTopPlaylist = async () => {
+  const { playlists } = await getTopPlaylists({
+    limit: 1,
+    cat: tabs[activeTabIndex.value]
+  }) as any
+  state.topPlaylist = playlists[0] || {}
+  console.log(state.topPlaylist)
+}
+const getPlaylist = async () => {
+  const { playlists, total } = await getPlaylists({
+    limit: pagination.pageSize,
+    offset: getPageOffset(pagination.currentPage, pagination.pageSize),
+    cat: tabs[activeTabIndex.value]
+  }) as any
+  state.playlists = playlists
+  pagination.total = total
+}
 </script>
 
 <style lang="scss" scoped>
-
+.play_list {
+  padding: 12px;
+  &_top {
+    margin-bottom: 16px;
+  }
+  &_card {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
 </style>
