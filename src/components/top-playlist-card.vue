@@ -78,6 +78,7 @@ defineProps({
       .desc {
         @include text-ellipsis-multi(5);
         font-size: 12px;
+        color: #FFFFFF;
       }
     }
   }

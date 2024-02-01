@@ -20,7 +20,12 @@
         :desc="`播放量：${formatNumber(item.playCount)}`">
       </playlist-card>
     </div>
-    <el-pagination ayout="prev, pager, next" :page-size="pagination.pageSize" :total="pagination.total"></el-pagination>
+    <el-pagination 
+      layout="prev, pager, next" 
+      :page-size="pagination.pageSize" 
+      :total="pagination.total"
+      @current-change="currentChange">
+    </el-pagination>
   </div>
 </template>
 
@@ -61,6 +66,14 @@ const getPlaylist = async () => {
   }) as any
   state.playlists = playlists
   pagination.total = total
+}
+const playList = ref()
+const currentChange = (page: number) => {
+  pagination.currentPage = page
+  getPlaylist()
+  console.log('playList', playList)
+  // 回到前面
+  playList.value?.scrollIntoView({ behavior: "smooth" })
 }
 </script>
 
