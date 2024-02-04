@@ -70,6 +70,7 @@ request.interceptors.response.use(
       type: 'error',
       message,
     })
+    console.log(error)
     return Promise.reject(error.response)
   },
 )

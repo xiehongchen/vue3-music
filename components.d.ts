@@ -8,6 +8,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ElPagination: typeof import('element-plus/es')['ElPagination']
+    ElTable: typeof import('element-plus/es')['ElTable']
+    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     LButton: typeof import('./src/base/L-Button.vue')['default']
     LCard: typeof import('./src/base/L-Card.vue')['default']
     LIcon: typeof import('./src/base/L-Icon.vue')['default']
@@ -19,6 +21,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SongCard: typeof import('./src/components/song-card.vue')['default']
+    SongTable: typeof import('./src/components/song-table.vue')['default']
     TopPlaylistCard: typeof import('./src/components/top-playlist-card.vue')['default']
     User: typeof import('./src/components/user.vue')['default']
   }

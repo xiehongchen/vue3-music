@@ -2,7 +2,7 @@
  * @Author: xiehongchen 1754581057@qq.com
  * @Date: 2024-02-04 11:02:08
  * @LastEditors: xiehongchen 1754581057@qq.com
- * @LastEditTime: 2024-02-04 12:23:56
+ * @LastEditTime: 2024-02-04 14:29:35
  * @FilePath: /vue3-music/src/store/music.ts
  * @Description: 
  * 认真学习每一天
@@ -94,7 +94,10 @@ export const musicStore = defineStore('music', () => {
     }
   }
 
+  const currentSong = computed(() => state.currentSong)
+
   return {
+    currentSong,
     startSong,
     clearCurrentSong,
     setPlaylist,
