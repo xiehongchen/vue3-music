@@ -1,3 +1,14 @@
+/*
+ * @Author: xiehongchen 1754581057@qq.com
+ * @Date: 2023-12-04 10:33:37
+ * @LastEditors: xiehongchen 1754581057@qq.com
+ * @LastEditTime: 2024-02-04 10:58:46
+ * @FilePath: /vue3-music/src/store/user.ts
+ * @Description: 
+ * 认真学习每一天
+ */
+import { getUserDetail, getUserPlaylist } from '@/api/user'
+import { ElMessage } from 'element-plus'
 import { defineStore } from 'pinia'
 
 
@@ -18,6 +29,22 @@ export const useUserStore = defineStore('user', () => {
   const userMenus = computed(() => state.userMenus)
   const userPlaylist = computed(() => state.userPlaylist)
 
+  // 登录
+  async function login(uid: string) {
+    if (!uid) {
+      ElMessage.error('uid错误，请重新输入！')
+      return
+    }
+    try {
+      const user: any = await getUserDetail(uid)
+      saveUserInfo(user.profile)
+    } catch (e) {
+      return ElMessage.error('登录错误')
+    }
+    const { playlist }: any = await getUserPlaylist(uid)
+    state.userPlaylist = playlist
+  }
+
   // 加载数据，尝试从本地存储中恢复数据
   function loadWareHouse() {
     const userInfo = localStorage.getItem('userInfo')
@@ -25,9 +52,6 @@ export const useUserStore = defineStore('user', () => {
       state.isLogin = true
       state.userInfo = JSON.parse(userInfo)
     }
-  }
-  function setUserPlaylist(playlist: any) {
-    state.userPlaylist = playlist
   }
   // 用户数据保存到本地
   function saveUserInfo(form: any) {
@@ -90,10 +114,10 @@ export const useUserStore = defineStore('user', () => {
     userInfo,
     isLogin,
     userPlaylist,
-    setUserPlaylist,
     userMenus,
     saveUserInfo,
     removeUserInfo,
     getUserMenus,
+    login
   }
 })

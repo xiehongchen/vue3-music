@@ -1,8 +1,10 @@
+import { getAlbum } from "@/api"
+
 /*
  * @Author: xiehongchen 1754581057@qq.com
  * @Date: 2023-12-04 10:33:37
  * @LastEditors: xiehongchen 1754581057@qq.com
- * @LastEditTime: 2024-01-31 11:08:31
+ * @LastEditTime: 2024-02-04 12:19:08
  * @FilePath: /vue3-music/src/utils/utils.ts
  * @Description: 
  * 认真学习每一天
@@ -63,4 +65,31 @@ export function formatTime(interval: number) {
 
 export function getPageOffset(page: number, limit: number) {
   return page * limit
+}
+
+export async function getSongImg(id: string, albumId: string) {
+  if (!id || !albumId) {
+    return
+  }
+  const { songs }: any = await getAlbum(albumId)
+  const { al: {picUrl} } = songs.find((item: any) => item.id === id) || {}
+  return picUrl
+}
+
+export function shallowEqual(a: any, b: any, compareKey: string) {
+  if (a.length !== b.length) {
+    return false
+  }
+  for (let i = 0; i < a.length; i++) {
+    let compareA = a[i]
+    let compareB = b[i]
+    if (compareKey) {
+      compareA = compareA[compareKey]
+      compareB = compareB[compareKey]
+    }
+    if (!Object.is(a[i], b[i])) {
+      return false
+    }
+  }
+  return true
 }

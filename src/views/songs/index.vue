@@ -1,5 +1,7 @@
 <template>
-  <div>最新音乐</div>
+  <div class="songs">
+    
+  </div>
 </template>
 
 <script setup lang="ts">
