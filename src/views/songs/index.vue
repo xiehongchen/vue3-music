@@ -15,7 +15,6 @@
 
 <script setup lang="ts">
 import { getTopSongs } from '@/api';
-import SongTable from '@/components/song-table.vue';
 import { createSong } from '@/utils';
 
 const songs = ref([])

@@ -62,7 +62,7 @@ const props = defineProps({
     type: String
   }
 })
-const emit = defineEmits(['tabChange'])
+const emit = defineEmits(['tabChange', 'update:active'])
 const isRouteMode = computed(() => props.data.length && (props.data[0] as any).to)
 const tabs = computed(() => {
   return typeof props.data[0] === 'string' ? props.data.map(tab => ({ title: tab })) : props.data
@@ -73,6 +73,7 @@ const onChangeTab = (tab: any, index: number) => {
   if (isRouteMode.value) {
     router.push(tab.to)
   } else {
+    emit('update:active', index)
     emit('tabChange', index)
   }
 }
@@ -141,6 +142,47 @@ const getItemCls = (tab: any, index: number) => {
       &.active {
         color: blue;
       }
+    }
+    &.theme {
+      font-size: 12px;
+
+      &.active {
+        color: red;
+        border-bottom: 2px solid red;
+        font-weight: 500;
+      }
+    }
+    &.split {
+      font-size: 12px;
+      padding: 4px 12px;
+      margin: 0 16px;
+      border-radius: 999em;
+
+      &.active {
+        color: red;
+        background: blue;
+      }
+
+      &:not(:last-child) {
+        &::after {
+          position: relative;
+          left: 28px;
+          width: 1px;
+          height: 100%;
+          background: blue;
+          display: inline-block;
+          vertical-align: middle;
+          content: " ";
+        }
+
+        .title {
+          vertical-align: middle;
+        }
+      }
+    }
+
+    &:hover {
+      color: green;
     }
   }
 

@@ -42,12 +42,12 @@ defineProps({
 
 <style lang="scss" scoped>
 .mv_card {
-  width: 500px;
+  min-width: 140px;
   padding: 10px;
   cursor: pointer;
   .img_wrap {
     position: relative;
-
+    padding-top: 56%;
     img {
       @include abs-stretch();
       width: 100%;
