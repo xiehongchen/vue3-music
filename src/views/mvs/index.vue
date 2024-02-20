@@ -100,7 +100,7 @@ watch(tabIndexes, () => {
 
     .list-item {
       width: 25%;
-      margin-bottom: 36px;
+      margin-bottom: 10px;
       padding: 0 12px;
     }
   }

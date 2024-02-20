@@ -14,6 +14,7 @@
         <template #default="scope">
           <div class="img-wrap">
             <img v-lazy="getImgUrl(scope.row.img, 120)">
+            <PlayIcon class="play-icon" />
           </div>
         </template>
       </el-table-column>
@@ -49,5 +50,63 @@ const isActiveSong = (song: any) => {
 </script>
 
 <style scoped lang='scss'>
+.song-table {
+  .title-th {
+    color: #333;
+    font-weight: normal;
+  }
 
+  .title-td {
+    color: #fff;
+  }
+
+  .padding-space {
+    padding-left: 24px;
+  }
+
+  .song-active {
+    color: #eee;
+
+    .high-light-text {
+      color: #fff;
+    }
+  }
+
+  .index-wrap {
+    text-align: center;
+    color: #666;
+  }
+
+  .img-wrap {
+    position: relative;
+    @include img-wrap(60px);
+
+    img {
+      border-radius: 4px;
+    }
+    .play-icon {
+      @include abs-center;
+    }
+  }
+  .high-light-text {
+    color: blue;
+  }
+
+  .song-table-name-cell {
+    @include text-ellipsis;
+    display: flex;
+    align-items: center;
+    flex: 0 0 24px;
+
+    .song-table-name {
+      overflow: hidden;
+      @include text-ellipsis;
+    }
+
+    .mv-icon {
+      width: 24px;
+      margin-left: 4px;
+    }
+  }
+}
 </style>

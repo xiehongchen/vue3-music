@@ -34,7 +34,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .layout-menu {
-  width: 200px;
+  width: 250px;
   // 减去 header 和 player 的高度
   height: calc(100vh - $header-height - $player-height);
   background-color: var(--menu-bg-color);

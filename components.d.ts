@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     ElCarousel: typeof import('element-plus/es')['ElCarousel']
     ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
+    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
@@ -20,6 +21,7 @@ declare module 'vue' {
     LTab: typeof import('./src/base/L-Tab.vue')['default']
     LTitle: typeof import('./src/base/L-Title.vue')['default']
     MvCard: typeof import('./src/components/mv-card.vue')['default']
+    PlayIcon: typeof import('./src/components/play-icon.vue')['default']
     PlaylistCard: typeof import('./src/components/playlist-card.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

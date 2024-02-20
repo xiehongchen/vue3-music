@@ -9,7 +9,13 @@
       </top-playlist-card>
     </div>
     <div class="tabs">
-
+      <l-tab
+        :data="tabs"
+        @tabChange="getSongs"
+        align="right"
+        type="small"
+        :active="activeTabIndex"
+      />
     </div>
     <div class="play-list-card">
       <playlist-card
@@ -50,6 +56,11 @@ onMounted(() => {
   getTopPlaylist()
   getPlaylist()
 })
+const getSongs = (index: number) => {
+  activeTabIndex.value = index
+  getTopPlaylist()
+  getPlaylist()
+}
 const getTopPlaylist = async () => {
   const { playlists } = await getTopPlaylists({
     limit: 1,

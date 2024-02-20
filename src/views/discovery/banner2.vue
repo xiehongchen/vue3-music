@@ -1,5 +1,5 @@
 <template>
-  <el-carousel trigger="click" :interval="4000" height="400px" class="banner-carousel">
+  <el-carousel trigger="click" type="card" :interval="4000" height="200px" class="banner-carousel">
     <el-carousel-item v-for="item, index in imgs" :key="index">
       <img
         :src="getImgUrl(item.imageUrl, 1000, 400)"

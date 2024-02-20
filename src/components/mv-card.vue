@@ -5,6 +5,9 @@
       <div class="play-count-wrap" v-if="playCount">
         {{ formatNumber(playCount) }}
       </div>
+      <div class="play-icon-wrap">
+        <PlayIcon :size="48" class="play-icon" />
+      </div>
       <div class="duration-wrap" v-if="duration">
         {{ formatTime(duration / 1000) }}
       </div>
