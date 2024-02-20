@@ -1,11 +1,11 @@
 <template>
-  <ul class="tab_wrap" :class="{[align]: true}">
+  <ul class="tab-wrap" :class="{[align]: true}">
     <template v-if="isRouteMode">
       <router-link 
         v-for="(tab, index) in (tabs as any[])"
         :key="index"
         :to="tab.to"
-        class="tab_item"
+        class="tab-item"
         :style="getItemStyle(tab, index)"
         tag="li"
         :active-class="activeItemClass">
@@ -16,7 +16,7 @@
       <li
         v-for="(tab, index) in (tabs as any[])"
         :key="index"
-        class="tab_item"
+        class="tab-item"
         :class="getItemCls(tab, index)"
         :style="getItemStyle(tab, index)"
         @click="onChangeTab(tab, index)">
@@ -113,7 +113,7 @@ const getItemCls = (tab: any, index: number) => {
 </script>
 
 <style scoped lang='scss'>
-.tab_wrap {
+.tab-wrap {
   display: flex;
   list-style-type: none;
   &.center {
@@ -123,7 +123,7 @@ const getItemCls = (tab: any, index: number) => {
   &.right {
     justify-content: flex-end;
   }
-  .tab_item {
+  .tab-item {
     padding: 12px 0;
     margin: 0 12px;
     color: #000;

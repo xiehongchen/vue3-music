@@ -8,15 +8,15 @@
  * 认真学习每一天
 -->
 <template>
-  <div class="song_card">
-    <div class="order_wrap">
+  <div class="song-card">
+    <div class="order-wrap">
       <span class="order">{{ pad(order) }}</span>
     </div>
-    <div class="img_wrap">
+    <div class="img-wrap">
       <img v-lazy="getImgUrl(img, 300)">
     </div>
-    <div class="song_content">
-      <p class="song_name">{{ name }}</p>
+    <div class="song-content">
+      <p class="song-name">{{ name }}</p>
       <p class="singer">{{ artistsText }}</p>
     </div>
   </div>
@@ -43,7 +43,7 @@ defineProps({
 </script>
 
 <style lang="scss" scoped>
-.song_card {
+.song-card {
   display: flex;
   padding: 8px;
   font-size: 12px;
@@ -56,13 +56,13 @@ defineProps({
   &:hover {
     background: #FFFFFF;
   }
-  .order_wrap {
+  .order-wrap {
     @include flex-center();
     width: 30px;
     margin-right: 8px;
   }
 
-  .img_wrap {
+  .img-wrap {
     position: relative;
     width: 60px;
     height: 60px;
@@ -77,14 +77,14 @@ defineProps({
     }
   }
 
-  .song_content {
+  .song-content {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     flex: 1;
     overflow: hidden;
 
-    .song_name {
+    .song-name {
       @include text-ellipsis;
     }
 

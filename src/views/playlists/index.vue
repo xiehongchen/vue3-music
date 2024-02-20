@@ -1,6 +1,6 @@
 <template>
-  <div class="play_list" ref="playList">
-    <div class="play_list_top" v-if="topPlaylist.id">
+  <div class="play-list" ref="playList">
+    <div class="play-list-top" v-if="topPlaylist.id">
       <top-playlist-card 
         :desc="topPlaylist.description"
         :id="topPlaylist.id"
@@ -11,7 +11,7 @@
     <div class="tabs">
 
     </div>
-    <div class="play_list_card">
+    <div class="play-list-card">
       <playlist-card
         v-for="item in playlists"
         :key="item.id"
@@ -78,12 +78,12 @@ const currentChange = (page: number) => {
 </script>
 
 <style lang="scss" scoped>
-.play_list {
+.play-list {
   padding: 12px;
-  &_top {
+  &-top {
     margin-bottom: 16px;
   }
-  &_card {
+  &-card {
     display: flex;
     flex-wrap: wrap;
   }

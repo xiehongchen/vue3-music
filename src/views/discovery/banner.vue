@@ -23,7 +23,7 @@ const newX = ref(0)
 const newY = ref(0)
 const carouselRef = ref<HTMLElement>()
 const imgRef = ref<HTMLImageElement[]>([])
-  interface imgItem {
+interface imgItem {
   targetId: number
   imageUrl: string
   alt: string

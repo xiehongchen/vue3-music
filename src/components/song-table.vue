@@ -1,5 +1,5 @@
 <template>
-    <el-table class="song_table" :data="songList">
+    <el-table class="song-table" :data="songList">
       <el-table-column prop="index" label="" width="70">
         <template #default="scope">
           <div v-if="isActiveSong(scope.row)">
@@ -12,7 +12,7 @@
       </el-table-column>
       <el-table-column prop="img" label="" width="100">
         <template #default="scope">
-          <div class="img_wrap">
+          <div class="img-wrap">
             <img v-lazy="getImgUrl(scope.row.img, 120)">
           </div>
         </template>

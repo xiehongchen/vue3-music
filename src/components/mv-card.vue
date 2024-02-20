@@ -1,11 +1,11 @@
 <template>
-  <div class="mv_card">
-    <div class="img_wrap">
+  <div class="mv-card">
+    <div class="img-wrap">
       <img v-lazy="getImgUrl(img, 500, 260)">
-      <div class="play_count_wrap" v-if="playCount">
+      <div class="play-count-wrap" v-if="playCount">
         {{ formatNumber(playCount) }}
       </div>
-      <div class="duration_wrap" v-if="duration">
+      <div class="duration-wrap" v-if="duration">
         {{ formatTime(duration / 1000) }}
       </div>
     </div>
@@ -41,11 +41,11 @@ defineProps({
 </script>
 
 <style lang="scss" scoped>
-.mv_card {
+.mv-card {
   min-width: 140px;
   padding: 10px;
   cursor: pointer;
-  .img_wrap {
+  .img-wrap {
     position: relative;
     padding-top: 56%;
     img {
@@ -54,7 +54,7 @@ defineProps({
       border-radius: 4px;
     }
 
-    .play_icon_wrap {
+    .play-icon-wrap {
       @include abs-stretch;
 
       &:hover {
@@ -71,7 +71,7 @@ defineProps({
       }
     }
 
-    .play_count_wrap {
+    .play-count-wrap {
       display: flex;
       align-items: center;
       position: absolute;
@@ -86,7 +86,7 @@ defineProps({
       }
     }
 
-    .duration_wrap {
+    .duration-wrap {
       position: absolute;
       right: 2px;
       bottom: 2px;

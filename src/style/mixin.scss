@@ -56,12 +56,12 @@
 }
 
 @mixin list($item-width) {
-  .list_wrap {
+  .list-wrap {
     display: flex;
     flex-wrap: wrap;
     margin: 0 -12px;
 
-    .list_item {
+    .list-item {
       width: $item-width;
       margin-bottom: 36px;
       padding: 0 12px;

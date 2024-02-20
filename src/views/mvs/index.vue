@@ -1,7 +1,7 @@
 <template>
   <div class="mvs" ref="page">
-    <div class="tabs_wrap">
-      <span class="tabs_type">地区：</span>
+    <div class="tabs-wrap">
+      <span class="tabs-type">地区：</span>
       <l-tab 
         :data="areaTabs"
         class="tabs"
@@ -9,8 +9,8 @@
         v-model:active="tabIndexes.activeAreaTabIndex">
       </l-tab>
     </div>
-    <div class="tabs_wrap">
-      <span class="tabs_type">类型：</span>
+    <div class="tabs-wrap">
+      <span class="tabs-type">类型：</span>
       <l-tab 
         :data="typeTabs"
         class="tabs"
@@ -18,8 +18,8 @@
         v-model:active="tabIndexes.activeTypeTabIndex">
       </l-tab>
     </div>
-    <div class="tabs_wrap">
-      <span class="tabs_type">地区：</span>
+    <div class="tabs-wrap">
+      <span class="tabs-type">地区：</span>
       <l-tab 
         :data="sortTabs"
         class="tabs"
@@ -27,8 +27,8 @@
         v-model:active="tabIndexes.activeSortTabIndex">
       </l-tab>
     </div>
-    <ul class="list_wrap">
-      <li v-for="mv in mvs" :key="mv.id" class="list_item">
+    <ul class="list-wrap">
+      <li v-for="mv in mvs" :key="mv.id" class="list-item">
         <mv-card 
           :author="mv.artistName"
           :duration="mv.duration"
@@ -83,22 +83,22 @@ watch(tabIndexes, () => {
   padding: 20px;
   margin: auto;
 
-  .tabs_wrap {
+  .tabs-wrap {
     margin-bottom: 16px;
     display: flex;
     align-items: center;
 
-    .tabs_type {
+    .tabs-type {
       font-size: 12px;
     }
   }
 
-  .list_wrap {
+  .list-wrap {
     display: flex;
     flex-wrap: wrap;
     margin: 0 -12px;
 
-    .list_item {
+    .list-item {
       width: 25%;
       margin-bottom: 36px;
       padding: 0 12px;

@@ -1,16 +1,7 @@
-<!--
- * @Author: xiehongchen 1754581057@qq.com
- * @Date: 2024-01-17 16:22:57
- * @LastEditors: xiehongchen 1754581057@qq.com
- * @LastEditTime: 2024-01-30 14:43:33
- * @FilePath: /vue3-music/src/views/discovery/last-song.vue
- * @Description: 
- * 认真学习每一天
--->
 <template>
-  <div class="last_song" v-if="list.length">
+  <div class="last-song" v-if="list.length">
     <l-title>最新音乐</l-title>
-    <div class="list_wrap">
+    <div class="list-wrap">
       <div v-for="(item, listIndex) in thunkedList" :key="listIndex" class="list">
         <song-card 
           v-for="(song, songIndex) in item" 
@@ -18,7 +9,7 @@
           :order="getSongOrder(listIndex, songIndex)"
           v-bind="nomalizeSong(song)"
           @click.native="onClickSong(listIndex, songIndex)" 
-          class="song_card"></song-card>
+          class="song-card"></song-card>
       </div>
     </div>
   </div>
@@ -83,10 +74,10 @@ const onClickSong = (listIndex: number, index: any) => {
 </script>
 
 <style lang="scss" scoped>
-.last_song {
+.last-song {
   margin-bottom: 36px;
 
-  .list_wrap {
+  .list-wrap {
     display: flex;
 
     .list {

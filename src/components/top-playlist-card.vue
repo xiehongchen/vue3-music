@@ -1,11 +1,11 @@
 <template>
   <div class="wrap">
-    <div class="top_playlist_card">
-      <div class="img_wrap">
+    <div class="top-playlist-card">
+      <div class="img-wrap">
         <img v-lazy="getImgUrl(img, 280)">
       </div>
       <div class="content">
-        <div class="tag_wrap">
+        <div class="tag-wrap">
           <span>精品歌单</span>
         </div>
         <p class="name">{{ name }}</p>
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="background" :style="{ backgroundImage: `url(${img})` }"></div>
-    <div class="background_mask"></div>
+    <div class="background-mask"></div>
   </div>
 </template>
 
@@ -43,13 +43,13 @@ defineProps({
   border-radius: 4px;
   cursor: pointer;
 
-  .top_playlist_card {
+  .top-playlist-card {
     position: relative;
     z-index: 1;
     display: flex;
     padding: 16px;
 
-    .img_wrap {
+    .img-wrap {
       @include img-wrap(140px);
       margin-right: 8px;
     }
@@ -60,7 +60,7 @@ defineProps({
       flex-direction: column;
       justify-content: center;
 
-      .tag_wrap {
+      .tag-wrap {
         align-self: flex-start;
         padding: 4px 16px;
         margin-bottom: 16px;
@@ -89,7 +89,7 @@ defineProps({
     z-index: 0;
   }
 
-  .background_mask {
+  .background-mask {
     @include abs-stretch;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 0;

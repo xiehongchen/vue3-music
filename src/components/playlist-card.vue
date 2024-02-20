@@ -1,11 +1,3 @@
-<!--
- * @Author: xiehongchen 1754581057@qq.com
- * @Date: 2024-01-16 12:12:37
- * @LastEditors: xiehongchen 1754581057@qq.com
- * @LastEditTime: 2024-01-31 11:19:09
- * @FilePath: /vue3-music/src/components/playlist-card.vue
- * @Description: 歌单卡片
--->
 <template>
   <div @click="onClickCard" class="playlist-card">
     <div class="img-wrap">
