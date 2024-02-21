@@ -9,7 +9,7 @@
         v-if="shouldHotCommentShow"
       >
         <p class="title">精彩评论</p>
-        <Comment
+        <comment-item
           v-for="(item, index) in hotComments"
           :comment="item"
           :key="index"
@@ -71,7 +71,6 @@ const getComment = async () => {
     'mv': getMvComment
   }
   const commentRequest = commentRequestMap[props.type as keyof typeof commentRequestMap];
-  console.log(commentRequest)
   const { hotComments = [], comments = [], total } = await commentRequest({
     id: props.id,
     pageSize: pagination.pageSize,
