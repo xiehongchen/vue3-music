@@ -1,5 +1,5 @@
 <template>
-  <div class="l-loading" :class="[customClass]" :style="[customStyle]">
+  <div class="l-loading" :class="[customClass]" :style="[customStyle]" v-show="loading">
     <div class="shape"></div>
     <div class="shape"></div>
     <div class="shape"></div>
@@ -17,6 +17,10 @@ defineProps({
     type: Object,
     default: () => ({}),
   },
+  loading: {
+    type: Boolean,
+    default: false
+  }
 });
 </script>
 

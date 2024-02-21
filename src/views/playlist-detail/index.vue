@@ -32,13 +32,21 @@
       </div>
     </div>
     <div class="tabs-wrap">
-      <Tabs :tabs="tabs" type="theme" v-model="activeTab" />
+      <L-Tab :data="tabs" type="theme" v-model:active="activeTab" />
       <el-input
         class="input"
         placeholder="搜索歌单音乐"
         prefix-icon="el-icon-search"
         v-model="searchValue"
       ></el-input>
+    </div>
+    <SongTable
+      :song-list="filteredSongs"
+      class="table"
+      v-show="activeTab === 0"
+    />
+    <div class="comments" v-show="activeTab === 1">
+      <Comments :id="id" type="playlist" />
     </div>
   </div>
 </template>
@@ -49,12 +57,15 @@ import { getListDetail, getSongDetail } from '@/api'
 import { createSong, getImgUrl, formatDate } from '@/utils';
 const route = useRoute()
 const id = route.params?.id
-const tabs = ref(["全部", "内地", "港台", "欧美", "日本", "韩国"])
+const tabs = ref(["歌曲列表", "评论"])
 const activeTab = ref(0)
 const searchValue = ref('')
 const list = ref<any>({})
 const songlist = ref([])
 const tagsText = computed(() => list.value.tags.join('/'))
+const filteredSongs = computed(() => songlist.value.filter(({ name, artistsText, albumName }: any) => {
+  return `${name}${artistsText}${albumName}`.toLowerCase().includes(searchValue.value.toLowerCase())
+}))
 
 onMounted(() => {
   init()
