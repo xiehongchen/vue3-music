@@ -1,6 +1,6 @@
 <template>
   <button 
-    :class="[customClass]"
+    :class="[customClass, 'l-button']"
     :style="[customStyle]"
     @click="onClick"
     :loading="loading"
@@ -37,7 +37,7 @@ const onClick = (e: Event) => {
 
 <style lang="scss" scoped>
 .l-button {
-  display: inline-block;
+  display: flex;
   padding: 5px 16px;
   border: 1px solid var(--button-border-color);
   text-align: center;
