@@ -46,7 +46,7 @@
       v-show="activeTab === 0"
     />
     <div class="comments" v-show="activeTab === 1">
-      <Comments :id="id" type="playlist" />
+      <CommentList :id="id" type="playlist" />
     </div>
   </div>
 </template>

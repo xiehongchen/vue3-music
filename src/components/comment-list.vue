@@ -9,11 +9,11 @@
         v-if="shouldHotCommentShow"
       >
         <p class="title">精彩评论</p>
-        <comment-item
-          v-for="(item, index) in hotComments"
+        <CommentItem
+          v-for="(item, index) in commentList"
           :comment="item"
           :key="index"
-        />
+        ></CommentItem>
       </div>
       <div
         class="block"
@@ -21,12 +21,23 @@
       >
         <p
           class="title"
-          ref="commentTitle"
+          ref="commentRef"
         >
           最新评论
           <span class="count">({{pagination.total}})</span>
+          <CommentItem
+          v-for="(item, index) in hotCommentList"
+          :comment="item"
+          :key="index"
+        ></CommentItem>
         </p>
       </div>
+      <el-pagination 
+        layout="prev, pager, next" 
+        :page-size="pagination.pageSize" 
+        :total="pagination.total"
+        @current-change="currentChange">
+      </el-pagination>
     </template>
   </div>
 </template>
@@ -50,19 +61,16 @@ const props =defineProps({
   }
 })
 const loading = ref(false)
-const comments = ref([])
-const hotComments = ref([])
+const commentList = ref([])
+const hotCommentList = ref([])
 const pagination = reactive({
   currentPage: 1,
   pageSize: 50,
   total: 0
 })
-const shouldHotCommentShow = computed(() => hotComments.value && pagination.currentPage === 1)
-const shouldCommentShow = computed(() => comments.value)
+const shouldHotCommentShow = computed(() => hotCommentList.value && pagination.currentPage === 1)
+const shouldCommentShow = computed(() => commentList.value)
 
-onMounted(() => {
-  getComment()
-})
 const getComment = async () => {
   loading.value = true
   const commentRequestMap = {
@@ -75,8 +83,6 @@ const getComment = async () => {
     id: props.id,
     pageSize: pagination.pageSize,
     offset: getPageOffset(1, 20)
-  }).finally(() => {
-    loading.value = false
   }) as any
 
   // 歌单的热评需要单独请求接口获取
@@ -85,13 +91,26 @@ const getComment = async () => {
     id: props.id,
     type: 2 // 歌单type
   }) as any
-    hotComments.value = exactHotComments
+    hotCommentList.value = exactHotComments
   } else {
-    hotComments.value = hotComments
+    hotCommentList.value = hotComments
   }
-  comments.value = comments
+  commentList.value = comments
   pagination.total = total
+  loading.value = false
 }
+const commentRef = ref()
+const currentChange = (page: number) => {
+  pagination.currentPage = page
+  getComment()
+  // 回到前面
+  commentRef.value?.scrollIntoView({ behavior: "smooth" })
+}
+onMounted(() => {
+  if (props.id) {
+    getComment();
+  }
+});
 </script>
 
 <style lang="scss" scoped>

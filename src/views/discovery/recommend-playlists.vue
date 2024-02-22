@@ -10,7 +10,8 @@
 
 <script setup lang='ts'>
 import { getPersonalized } from '@/api'
-import router from '@/router';
+import { useRouter } from 'vue-router'
+const router = useRouter()
 interface listType {
   copywriter: string,
   id: string,

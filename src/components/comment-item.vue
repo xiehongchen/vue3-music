@@ -19,7 +19,7 @@
       <div class="bottom">
         <span class="date">{{ formatDate(comment.time) }}</span>
         <div class="actions">
-          <Icon :size="12" type="good" />
+          <el-icon><Star /></el-icon>
           {{ comment.likedCount }}
         </div>
       </div>

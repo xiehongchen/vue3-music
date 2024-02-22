@@ -67,7 +67,6 @@ const getTopPlaylist = async () => {
     cat: tabs[activeTabIndex.value]
   }) as any
   state.topPlaylist = playlists[0] || {}
-  console.log(state.topPlaylist)
 }
 const getPlaylist = async () => {
   const { playlists, total } = await getPlaylists({

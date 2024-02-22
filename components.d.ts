@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     CommentItem: typeof import('./src/components/comment-item.vue')['default']
+    CommentList: typeof import('./src/components/comment-list.vue')['default']
     Comments: typeof import('./src/components/comments.vue')['default']
     ElCarousel: typeof import('element-plus/es')['ElCarousel']
     ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
