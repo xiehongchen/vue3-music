@@ -2,7 +2,7 @@
  * @Author: xiehongchen 1754581057@qq.com
  * @Date: 2024-02-04 11:02:08
  * @LastEditors: xiehongchen 1754581057@qq.com
- * @LastEditTime: 2024-02-04 14:29:35
+ * @LastEditTime: 2024-02-22 17:59:24
  * @FilePath: /vue3-music/src/store/music.ts
  * @Description: 
  * 认真学习每一天
@@ -11,11 +11,13 @@
 import { getSongImg, shallowEqual } from "@/utils";
 import { playModeMap } from "@/utils/config";
 import { defineStore } from "pinia";
-
-export const musicStore = defineStore('music', () => {
+interface songType {
+  img?: string
+}
+export const useMusicStore = defineStore('music', () => {
   const state = reactive({
     // 当前播放歌曲
-    currentSong: {},
+    currentSong: {} as songType,
     // 当前播放时长
     currentTime: 0,
     // 播放状态
@@ -31,7 +33,7 @@ export const musicStore = defineStore('music', () => {
     // 播放列表数据
     playlist: [],
     // 播放历史数据
-    playHistory: localStorage.getItem('history-list') as any,
+    playHistory: JSON.stringify(localStorage.getItem('history-list')) || [],
     // 菜单显示
     isMenuShow: true,
   })
@@ -49,15 +51,6 @@ export const musicStore = defineStore('music', () => {
     }
     state.currentSong = song
     state.playing = true
-    const playHistoryCopy = state.playHistory?.slice()
-    const findedIndex = playHistoryCopy.findIndex((item: any) => song.id === item.id)
-    if (findedIndex !== -1) {
-      // 删除旧项，插入到前面
-      playHistoryCopy.splice(findedIndex, 1)
-    }
-    playHistoryCopy.unshift(song)
-    state.playHistory = playHistoryCopy
-    localStorage.setItem('history-list', playHistoryCopy)
   }
 
   function clearCurrentSong () {
@@ -90,7 +83,6 @@ export const musicStore = defineStore('music', () => {
     const copy = state.playlist as any[]
     if (!copy.find((item: {id: string}) => item.id === song.id)) {
       copy.unshift(song)
-      state.playHistory = copy
     }
   }
 

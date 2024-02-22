@@ -18,6 +18,8 @@
 <script setup lang="ts">
 import { getNewSongs } from "@/api"
 import { createSong } from "@/utils"
+import { useMusicStore } from '@/store/music'
+const musicStore = useMusicStore()
 interface listType {
   copywriter: string;
   id: string;
@@ -48,28 +50,32 @@ const getSongOrder = (listIndex: number, index: any) => {
 };
 
 const nomalizeSong =(song: any) => {
-      const {
-        id,
-        name,
-        song: {
-          mvid,
-          artists,
-          album: { blurPicUrl },
-          duration
-        }
-      } = song
-      return createSong({
-        id,
-        name,
-        img: blurPicUrl,
-        artists,
-        duration,
-        mvId: mvid
-      })
+  const {
+    id,
+    name,
+    song: {
+      mvid,
+      artists,
+      album: { blurPicUrl },
+      duration
     }
+  } = song
+  return createSong({
+    id,
+    name,
+    img: blurPicUrl,
+    artists,
+    duration,
+    mvId: mvid
+  })
+}
+const normalizedSongs = computed(() => list.value.map((song: any) => nomalizeSong(song)))
 
 const onClickSong = (listIndex: number, index: any) => {
   console.log(listIndex, index)
+  const nomalizedSongIndex = getSongOrder(listIndex, index) - 1
+  const nomalizedSong = normalizedSongs.value[nomalizedSongIndex]
+  musicStore.startSong(nomalizedSong)
 }
 </script>
 
