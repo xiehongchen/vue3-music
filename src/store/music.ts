@@ -2,7 +2,7 @@
  * @Author: xiehongchen 1754581057@qq.com
  * @Date: 2024-02-04 11:02:08
  * @LastEditors: xiehongchen 1754581057@qq.com
- * @LastEditTime: 2024-02-23 11:56:36
+ * @LastEditTime: 2024-02-23 12:14:40
  * @FilePath: /vue3-music/src/store/music.ts
  * @Description: 
  * 认真学习每一天
@@ -102,5 +102,6 @@ export const useMusicStore = defineStore('music', {
         copy.unshift(song)
       }
     }
-  }
+  },
+  persist: true
 })
