@@ -4,7 +4,7 @@
     <div class="layout-main">
       <layout-menu></layout-menu>
       <div class="main">
-        <router-view></router-view>
+        <router-view />
       </div>
     </div>
     <layout-player></layout-player>

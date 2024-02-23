@@ -1,3 +1,12 @@
+/*
+ * @Author: xiehongchen 1754581057@qq.com
+ * @Date: 2023-12-04 10:33:37
+ * @LastEditors: xiehongchen 1754581057@qq.com
+ * @LastEditTime: 2024-02-23 15:08:49
+ * @FilePath: /vue3-music/src/router/routes.ts
+ * @Description: 
+ * 认真学习每一天
+ */
 import { RouteRecordRaw } from "vue-router"
 
 export const menuRoutes: RouteRecordRaw[] = [
@@ -44,7 +53,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/',
     redirect: '/discovery',
-    component: () => import('@/layout/index.vue'),
+    // component: () => import('@/layout/index.vue'),
     children: [
       {
         path: '/playlist/:id',

@@ -1,5 +1,6 @@
 <template>
   <div class="layout-player">
+    <!-- 左侧 -->
     <div class="song">
       <template v-if="hasCurrentSong">
         <div class="img-wrap" @click="togglePlayerShow">
@@ -24,11 +25,55 @@
             }}</span>
             <span class="split">/</span>
             <span class="total-time">{{
-              formatTime(currentSong.duration || 0 / 1000)
+              formatTime((currentSong.duration || 0) / 1000)
             }}</span>
           </div>
         </div>
       </template>
+    </div>
+    <!-- 中间 -->
+    <div class="control">
+      <el-icon><DArrowLeft /></el-icon>
+      <div class="play-icon">
+        <el-icon><CaretRight /></el-icon>
+      </div>
+      <el-icon><DArrowRight /></el-icon>
+    </div>
+    <!-- 右侧 -->
+    <div class="mode">
+      <!-- 模式 -->
+      <el-popover placement="top" trigger="hover" width="160">
+        <p slot="-">{{ playModeText }}</p>
+        <template #reference><el-icon><DArrowLeft /></el-icon></template>
+        
+        <!-- <Icon
+          :size="20"
+          :type="modeIcon"
+          @click="onChangePlayMode"
+          class="mode-item"
+          slot="reference"
+        /> -->
+      </el-popover>
+      <!-- 播放列表 -->
+      <!-- <el-popover
+        :value="isPlaylistPromptShow"
+        placement="top"
+        trigger="manual"
+        width="160"
+      >
+        <p>已更新歌单</p>
+        <Icon
+          :size="20"
+          @click="togglePlaylistShow"
+          class="mode-item"
+          slot="reference"
+          type="playlist"
+        />
+      </el-popover> -->
+      <!-- 音量 -->
+      <!-- <div class="volume-item">
+        <Volume :volume="volume" @volumeChange="onVolumeChange" />
+      </div> -->
     </div>
   </div>
 </template>
@@ -45,6 +90,10 @@ console.log('currentSong', currentSong.value)
 const togglePlayerShow = () => {
   musicStore.isPlayerShow = !musicStore.isPlayerShow
 }
+
+// const isPlayErrorPromptShow = ref(false)
+
+const playModeText = ref('123')
 </script>
 
 <style lang="scss" scoped>
