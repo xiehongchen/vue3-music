@@ -1,11 +1,31 @@
 <template>
   <div class="layout-player">
     <div class="song">
-      <template>
-        <div class="img-wrap">
+      <template v-if="hasCurrentSong">
+        <div class="img-wrap" @click="togglePlayerShow">
           <div class="mask"></div>
           <img v-lazy="getImgUrl(currentSong.img || '', 80)" class="blur" />
           <div class="player-control">
+            <el-icon color="white">
+              <ArrowDown v-if="isPlayerShow" />
+              <ArrowUp v-else />
+            </el-icon>
+          </div>
+        </div>
+        <div class="content">
+          <div class="top">
+            <p class="name">{{ currentSong.name }}</p>
+            <p class="split">-</p>
+            <p class="artists">{{ currentSong.artistsText }}</p>
+          </div>
+          <div class="time">
+            <span class="played-time">{{
+              formatTime(currentTime)
+            }}</span>
+            <span class="split">/</span>
+            <span class="total-time">{{
+              formatTime(currentSong.duration || 0 / 1000)
+            }}</span>
           </div>
         </div>
       </template>
@@ -14,15 +34,17 @@
 </template>
 
 <script setup lang="ts">
-import { getImgUrl } from '@/utils'
+import { getImgUrl, formatTime } from '@/utils'
 import { useMusicStore } from '@/store/music'
 const musicStore = useMusicStore()
-interface songType {
-  img?: string
+const hasCurrentSong = computed(() => musicStore.hasCurrentSong)
+const currentSong = computed(() => musicStore.currentSong)
+const isPlayerShow = computed(() => musicStore.isPlayerShow)
+const currentTime = computed(() => musicStore.currentTime)
+console.log('currentSong', currentSong.value)
+const togglePlayerShow = () => {
+  musicStore.isPlayerShow = !musicStore.isPlayerShow
 }
-const currentSong = ref<songType>(musicStore.currentSong)
-console.log('currentSong', currentSong)
-
 </script>
 
 <style lang="scss" scoped>
@@ -81,7 +103,7 @@ console.log('currentSong', currentSong)
         white-space: nowrap;
 
         .name {
-          color: #fff;
+          color: #333;
           @include text-ellipsis;
         }
 

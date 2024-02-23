@@ -2,7 +2,7 @@
  * @Author: xiehongchen 1754581057@qq.com
  * @Date: 2024-02-04 11:02:08
  * @LastEditors: xiehongchen 1754581057@qq.com
- * @LastEditTime: 2024-02-22 17:59:24
+ * @LastEditTime: 2024-02-23 11:56:36
  * @FilePath: /vue3-music/src/store/music.ts
  * @Description: 
  * 认真学习每一天
@@ -13,11 +13,27 @@ import { playModeMap } from "@/utils/config";
 import { defineStore } from "pinia";
 interface songType {
   img?: string
+  id?: string
+  name?: string
+  artistsText?: string
+  duration?: number
 }
-export const useMusicStore = defineStore('music', () => {
-  const state = reactive({
+interface musicState {
+  currentSong: songType
+  currentTime: number
+  playing: boolean
+  playMode: string
+  isPlaylistShow: boolean
+  isPlaylistPromptShow: boolean
+  isPlayerShow: boolean
+  playlist: []
+  playHistory: string[]
+  isMenuShow: boolean
+}
+export const useMusicStore = defineStore('music', {
+  state: (): musicState => ({
     // 当前播放歌曲
-    currentSong: {} as songType,
+    currentSong: {},
     // 当前播放时长
     currentTime: 0,
     // 播放状态
@@ -33,68 +49,58 @@ export const useMusicStore = defineStore('music', () => {
     // 播放列表数据
     playlist: [],
     // 播放历史数据
-    playHistory: JSON.stringify(localStorage.getItem('history-list')) || [],
+    playHistory: [],
     // 菜单显示
     isMenuShow: true,
-  })
-
-  // 整合歌曲信息 并且开始播放
-  async function startSong(rawSong: any) {
-    // 浅拷贝一份 改变引用
-    // 1.不污染元数据
-    // 2.单曲循环为了触发watch
-    const song = Object.assign({}, rawSong)
-    if (!song.img) {
-      if (song.albumId) {
-        song.img = await getSongImg(song.id, song.albumId)
+  }),
+  getters: {
+    hasCurrentSong(state): boolean {
+      return state.currentSong.id !== undefined
+    }
+  },
+  actions: {
+    // 整合歌曲信息 并且开始播放
+    async startSong(rawSong: any) {
+      // 浅拷贝一份 改变引用
+      // 1.不污染元数据
+      // 2.单曲循环为了触发watch
+      const song = Object.assign({}, rawSong)
+      if (!song.img) {
+        if (song.albumId) {
+          song.img = await getSongImg(song.id, song.albumId)
+        }
+      }
+      this.currentSong = song
+      this.playing = true
+    },
+    clearCurrentSong () {
+      this.currentSong = {}
+      this.playing = false
+      this.currentTime = 0
+    },
+    setPlaylist (list: []) {
+      const oldPlaylist = JSON.parse(JSON.stringify(this.playlist))
+      this.playlist = list
+      if (!this.isPlaylistPromptShow && shallowEqual(oldPlaylist, list, 'id')){
+        this.isPlaylistPromptShow = true
+        setTimeout(() => {
+          this.isPlaylistPromptShow = false
+        }, 2000)
+      }
+    },
+    clearPlaylist() {
+      this.setPlaylist([])
+      this.clearCurrentSong()
+    },
+    clearHistory() {
+      this.playHistory = []
+      localStorage.setItem('history-list', '')
+    },
+    addToPlaylist (song: any) {
+      const copy = this.playlist as any[]
+      if (!copy.find((item: {id: string}) => item.id === song.id)) {
+        copy.unshift(song)
       }
     }
-    state.currentSong = song
-    state.playing = true
-  }
-
-  function clearCurrentSong () {
-    state.currentSong = {}
-    state.playing = false
-    state.currentTime = 0
-  }
-
-  function setPlaylist (list: []) {
-    const oldPlaylist = JSON.parse(JSON.stringify(state.playlist))
-    state.playlist = list
-    if (!state.isPlaylistPromptShow && shallowEqual(oldPlaylist, list, 'id')){
-      state.isPlaylistPromptShow = true
-      setTimeout(() => {
-        state.isPlaylistPromptShow = false
-      }, 2000)
-    }
-  }
-  function clearPlaylist() {
-    setPlaylist([])
-    clearCurrentSong()
-  }
-
-  function clearHistory() {
-    state.playHistory = []
-    localStorage.setItem('history-list', '')
-  }
-  
-  function addToPlaylist (song: any) {
-    const copy = state.playlist as any[]
-    if (!copy.find((item: {id: string}) => item.id === song.id)) {
-      copy.unshift(song)
-    }
-  }
-
-  const currentSong = computed(() => state.currentSong)
-
-  return {
-    currentSong,
-    startSong,
-    clearCurrentSong,
-    setPlaylist,
-    clearPlaylist,
-    clearHistory,
-    addToPlaylist,
   }
 })

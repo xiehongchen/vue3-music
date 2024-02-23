@@ -34,9 +34,9 @@
 </template>
 
 <script setup lang='ts'>
-import { musicStore } from '@/store/music';
 import { pad, getImgUrl, formatTime } from '@/utils'
-const music = musicStore()
+import { useMusicStore } from '@/store/music'
+const musicStore = useMusicStore()
 defineProps({
   songList: {
     type: Array,
@@ -45,7 +45,7 @@ defineProps({
 })
 
 const isActiveSong = (song: any) => {
-  return song.id === music.currentSong
+  return song.id === musicStore.currentSong
 }
 </script>
 
