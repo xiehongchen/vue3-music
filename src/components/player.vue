@@ -28,6 +28,94 @@
               </div>
             </div>
           </div>
+          <div class="right">
+            <div class="name-wrap">
+              <p class="name">{{currentSong.name}}</p>
+              <span
+                @click="onGoMv"
+                class="mv-tag"
+                v-if="currentSong.mvId"
+              >MV</span>
+            </div>
+            <div class="desc">
+              <div class="desc-item">
+                <span class="label">歌手：</span>
+                <div class="value">{{currentSong.artistsText}}</div>
+              </div>
+            </div>
+            <empty v-if="nolyric">还没有歌词哦~</empty>
+            <scroller :data="lyricList"></scroller>
+          </div>
+          <!-- <div class="bottom">
+            <div class="left">
+              <Comments
+                :id="currentSong.id"
+                ref="comments"
+                v-if="currentSong.id"
+              />
+            </div>
+            <div
+              class="right"
+              v-if="simiPlaylists.concat(simiSongs).length"
+            >
+              <Loading
+                :loading="simiLoading"
+                v-if="simiLoading"
+              />
+              <div v-else>
+                <div
+                  class="simi-playlists"
+                  v-if="simiPlaylists.length"
+                >
+                  <p class="title">包含这首歌的歌单</p>
+                  <div
+                    :key="simiPlaylist.id"
+                    class="simi-item"
+                    v-for="simiPlaylist in simiPlaylists"
+                  >
+                    <Card
+                      :img="simiPlaylist.coverImgUrl"
+                      :name="simiPlaylist.name"
+                      @click="onClickPlaylist(simiPlaylist.id)"
+                    >
+                      <template v-slot:desc>
+                        <div class="desc">
+                          <Icon
+                            :size="12"
+                            color="shallow"
+                            type="play"
+                          />
+                          <p class="count">{{$utils.formatNumber(simiPlaylist.playCount)}}</p>
+                        </div>
+                      </template>
+                    </Card>
+                  </div>
+                </div>
+                <div
+                  class="simi-songs"
+                  v-if="simiSongs.length"
+                >
+                  <p class="title">相似歌曲</p>
+                  <div
+                    :key="simiSong.id"
+                    class="simi-item"
+                    v-for="simiSong in simiSongs"
+                  >
+                    <Card
+                      :desc="simiSong.artistsText"
+                      :img="simiSong.img"
+                      :name="simiSong.name"
+                      @click="onClickSong(simiSong)"
+                    >
+                      <template v-slot:img-mask>
+                        <PlayIcon class="play-icon" />
+                      </template>
+                    </Card>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -35,6 +123,7 @@
 </template>
 
 <script setup lang='ts'>
+import { getLyric } from '@/api/song'
 import { getImgUrl } from '@/utils'
 import { useMusicStore } from '@/store/music'
 const musicStore = useMusicStore()
@@ -44,6 +133,115 @@ const playing = computed(() => musicStore.playing)
 const getPlayerShowCls = computed(() => {
   return musicStore.isPlayerShow ? 'show' : 'hide'
 })
+
+// 更新歌曲
+const updateSong = () => {
+  updateLyric()
+}
+// 没有歌词
+const nolyric = ref(false)
+// 歌词数据
+const lyricList = ref<any[]>([])
+const tlyricList = ref<any[]>([])
+const updateLyric = async () => {
+  const result = await getLyric(currentSong.value.id!) as any
+  console.log('result', result)
+  nolyric.value = !result.lrc.lyric || result.lrc === undefined
+  if (!nolyric.value) {
+    const { lyric, tlyric } = lyricParser(result)
+    lyricList.value = lyric
+    tlyricList.value = tlyric
+    console.log('lyricList', lyricList.value);
+    console.log('tlyricList', tlyricList.value);
+    
+  }
+}
+
+const onGoMv = () => {
+
+}
+
+const lyricWithTranslation = computed(() => {
+  let ret: any[] = []
+  // 空内容的去除
+  const lyricFilltered = lyricList.value.filter((l: any) => Boolean(l.content))
+  // content统一转换为数组
+  if (lyricFilltered.length) {
+    lyricFilltered.forEach((l: any) => {
+      const { time, content } = l
+        const lyricItem = { time, content, contents: [content] }
+        const sameTimeTLyric = tlyricList.value.find(
+          ({ time: tLyricTime }) => tLyricTime === time
+        )
+        if (sameTimeTLyric) {
+          const { content: tLyricContent } = sameTimeTLyric
+          if (content) {
+            lyricItem.contents.push(tLyricContent)
+          }
+        }
+        ret.push(lyricItem)
+    })
+  } else {
+    ret = lyricFilltered.map(({ time, content }) => ({
+      time, content, contents: [content] })
+    )
+  }
+  return ret
+})
+
+console.log('lyricWithTranslation', lyricWithTranslation.value);
+
+
+const activeLyricIndex = computed(() => {
+  return lyricWithTranslation.value ? lyricWithTranslation.value.findIndex((l: any, index: number) => {
+    const nextLyric = lyricWithTranslation.value[index + 1]
+    return (
+      musicStore.currentTime > l.time &&
+      (nextLyric ? musicStore.currentTime < nextLyric.time : true)
+    )
+  }) : -1
+})
+
+const getActiveCls = (index: number) => {
+  return index === activeLyricIndex.value ? 'active' : ''
+}
+
+console.log(getActiveCls);
+
+
+watch(() => currentSong.value.id, () => {
+  updateSong()
+}, { immediate: true })
+
+function lyricParser(lyric: any) {
+  return {
+    'lyric': parseLyric(lyric.lrc.lyric || ''), 
+    'tlyric': parseLyric(lyric.tlyric.tlyric || ''),
+    'lyricuser': lyric.lyricUser,
+    'transuser': lyric.transUser,
+  }
+}
+// 解析歌词字符串
+function parseLyric(lrc: any) {
+  var lines = lrc.split('\n');
+  var result = []; // 歌词对象数组
+  for (var i = 0; i < lines.length; i++) {
+    var str = lines[i];
+    var parts = str.split(']');
+    var timeStr = parts[0].substring(1);
+    var obj = {
+      time: parseTime(timeStr),
+      word: parts[1],
+    };
+    result.push(obj);
+  }
+  return result;
+}
+function parseTime(timeStr: string) {
+  var parts = timeStr.split(':');
+  return +parts[0] * 60 + +parts[1];
+}
+
 </script>
 
 <style scoped lang='scss'>
@@ -161,7 +359,7 @@ $img-outer-d: 300px;
 
           .name {
             font-size: 24px;
-            color: #fff;
+            color: #333;
           }
 
           .mv-tag {

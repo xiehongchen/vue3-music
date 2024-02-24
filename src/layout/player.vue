@@ -35,7 +35,7 @@
     <div class="control">
       <el-icon><DArrowLeft /></el-icon>
       <div class="play-icon">
-        <el-icon><CaretRight /></el-icon>
+        <el-icon @click="togglePlaying"><CaretRight /></el-icon>
       </div>
       <el-icon><DArrowRight /></el-icon>
     </div>
@@ -75,6 +75,13 @@
         <Volume :volume="volume" @volumeChange="onVolumeChange" />
       </div> -->
     </div>
+    <audio
+      :src="currentSong.url"
+      @canplay="ready"
+      @ended="end"
+      @timeupdate="updateTime"
+      ref="audio"
+    ></audio>
   </div>
 </template>
 
@@ -94,6 +101,59 @@ const togglePlayerShow = () => {
 // const isPlayErrorPromptShow = ref(false)
 
 const playModeText = ref('123')
+
+const songReady = ref(false)
+const togglePlaying = () => {
+  if (currentSong.value.id) {
+    musicStore.playing = !musicStore.playing
+  }
+}
+// 准备播放
+const ready = () => {
+  songReady.value = true
+}
+// 播放结束
+const end = () => {
+  next()
+}
+// 更新时间
+const updateTime = (e: Event) => {
+  const audio = e.target as HTMLAudioElement
+  musicStore.currentTime = audio.currentTime
+}
+// 下一首
+const next = () => {
+  if (songReady.value) {
+    musicStore.startSong(musicStore.nextSong)
+  }
+}
+// 上一首
+const prev = () => {
+  if (songReady.value) {
+    // musicStore.prevSong()
+  }
+}
+const audio = ref()
+const play = async () => {
+  if (songReady.value && audio.value) {
+    try {
+      await audio.value.play()
+    } catch (error) {
+      console.log('播放失败', error)
+    }
+  }
+}
+
+watch(
+  () => musicStore.playing,
+  (newVal) => {
+    if (newVal) {
+      play()
+    } else {
+      audio.value?.pause()
+    }
+  }
+)
 </script>
 
 <style lang="scss" scoped>

@@ -17,6 +17,8 @@ interface songType {
   name?: string
   artistsText?: string
   duration?: number
+  mvId?: string
+  url?: string
 }
 interface musicState {
   currentSong: songType
@@ -27,7 +29,7 @@ interface musicState {
   isPlaylistPromptShow: boolean
   isPlayerShow: boolean
   playlist: []
-  playHistory: string[]
+  playHistoryList: string[]
   isMenuShow: boolean
 }
 export const useMusicStore = defineStore('music', {
@@ -49,13 +51,21 @@ export const useMusicStore = defineStore('music', {
     // 播放列表数据
     playlist: [],
     // 播放历史数据
-    playHistory: [],
+    playHistoryList: [],
     // 菜单显示
     isMenuShow: true,
   }),
   getters: {
     hasCurrentSong(state): boolean {
       return state.currentSong.id !== undefined
+    },
+    nextSong(state): songType {
+      const index = state.playlist.findIndex((item: {id: string}) => item.id === state.currentSong.id)
+      let nextIndex = index + 1
+      if (nextIndex === state.playlist.length) {
+        nextIndex = 0
+      }
+      return state.playlist[nextIndex]
     }
   },
   actions: {
@@ -93,7 +103,7 @@ export const useMusicStore = defineStore('music', {
       this.clearCurrentSong()
     },
     clearHistory() {
-      this.playHistory = []
+      this.playHistoryList = []
       localStorage.setItem('history-list', '')
     },
     addToPlaylist (song: any) {
