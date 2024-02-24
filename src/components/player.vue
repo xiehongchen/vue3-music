@@ -355,6 +355,7 @@ $img-outer-d: 300px;
         .name-wrap {
           display: flex;
           align-items: center;
+          justify-content: center;
           margin-bottom: 16px;
 
           .name {
@@ -379,6 +380,7 @@ $img-outer-d: 300px;
 
         .desc {
           display: flex;
+          justify-content: center;
           font-size: 12px;
           margin-bottom: 30px;
 

@@ -31,6 +31,7 @@ interface musicState {
   playlist: []
   playHistoryList: string[]
   isMenuShow: boolean
+  audioElement: HTMLAudioElement | null
 }
 export const useMusicStore = defineStore('music', {
   state: (): musicState => ({
@@ -54,6 +55,8 @@ export const useMusicStore = defineStore('music', {
     playHistoryList: [],
     // 菜单显示
     isMenuShow: true,
+    // 播放器
+    audioElement: null
   }),
   getters: {
     hasCurrentSong(state): boolean {

@@ -80,7 +80,7 @@
       @canplay="ready"
       @ended="end"
       @timeupdate="updateTime"
-      ref="audio"
+      ref="audioRef"
     ></audio>
   </div>
 </template>
@@ -128,21 +128,26 @@ const next = () => {
   }
 }
 // 上一首
-const prev = () => {
-  if (songReady.value) {
-    // musicStore.prevSong()
-  }
-}
-const audio = ref()
+// const prev = () => {
+//   if (songReady.value) {
+//     // musicStore.prevSong()
+//   }
+// }
+const audioRef = ref()
 const play = async () => {
-  if (songReady.value && audio.value) {
+  if (songReady.value && audioRef.value) {
     try {
-      await audio.value.play()
+      audioRef.value.currentTime = musicStore.currentTime
+      await audioRef.value.play()
     } catch (error) {
       console.log('播放失败', error)
     }
   }
 }
+
+onMounted(() => {
+  musicStore.audioElement = audioRef.value
+})
 
 watch(
   () => musicStore.playing,
@@ -150,7 +155,7 @@ watch(
     if (newVal) {
       play()
     } else {
-      audio.value?.pause()
+      audioRef.value?.pause()
     }
   }
 )
