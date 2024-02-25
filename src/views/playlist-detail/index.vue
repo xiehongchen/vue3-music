@@ -15,7 +15,7 @@
             {{ formatDate(list.createTime, "yyyy-MM-dd") }} 创建
           </p>
         </div>
-        <div class="action-wrap">
+        <div class="action-wrap" @click="playAll">
           <L-Button class="button">
             <play-icon></play-icon>
             <span class="middle">播放全部</span>
@@ -55,6 +55,8 @@
 import { useRoute } from 'vue-router'
 import { getListDetail, getSongDetail } from '@/api'
 import { createSong, getImgUrl, formatDate } from '@/utils';
+import { useMusicStore } from '@/store/music'
+const musicStore = useMusicStore()
 const route = useRoute()
 const id = route.params?.id
 const tabs = ref(["歌曲列表", "评论"])
@@ -88,7 +90,11 @@ const init = async () => {
   )
   songlist.value = songs
   console.log(list.value, songlist.value);
-  
+}
+
+const playAll = () => {
+  musicStore.playlist = songlist.value
+  musicStore.startSong(songlist.value[0])
 }
 
 </script>
@@ -142,6 +148,7 @@ const init = async () => {
           }
 
           .middle {
+            margin-left: 5px;
             vertical-align: middle;
           }
         }

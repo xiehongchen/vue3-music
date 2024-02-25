@@ -39,11 +39,11 @@
             </div>
             <div class="desc">
               <div class="desc-item">
-                <span class="label">歌手：</span>
+                <div class="label">歌手</div>
                 <div class="value">{{currentSong.artistsText}}</div>
               </div>
             </div>
-            <empty v-if="nolyric">还没有歌词哦~</empty>
+            <div v-if="nolyric">还没有歌词哦~</div>
             <scroller :data="lyricList"></scroller>
           </div>
           <!-- <div class="bottom">
@@ -286,6 +286,7 @@ $img-outer-d: 300px;
 
     .song {
       display: flex;
+      max-height: 500px;
 
       .left {
         position: relative;
@@ -294,10 +295,10 @@ $img-outer-d: 300px;
         justify-content: center;
 
         $support-d: 30px;
-        $support-d-half: $support-d / 2;
+        $support-d-half: calc($support-d / 2);
         .play-bar-support {
           position: absolute;
-          left: $img-left-padding + $img-outer-border-d / 2 - $support-d / 2;
+          left: $img-left-padding + calc($img-outer-border-d / 2) - calc($support-d / 2);
           top: -$support-d-half;
           width: $support-d;
           height: $support-d;
@@ -309,7 +310,7 @@ $img-outer-d: 300px;
           $h: 146px;
           position: absolute;
           top: 0;
-          left: $img-left-padding + $img-outer-border-d / 2 - 6px;
+          left: $img-left-padding + calc($img-outer-border-d / 2) - 6px;
           width: $w;
           height: $h;
           z-index: 1;
@@ -382,7 +383,7 @@ $img-outer-d: 300px;
           display: flex;
           justify-content: center;
           font-size: 12px;
-          margin-bottom: 30px;
+          margin-bottom: 10px;
 
           .desc-item {
             display: flex;

@@ -33,11 +33,13 @@
     </div>
     <!-- 中间 -->
     <div class="control">
-      <el-icon><DArrowLeft /></el-icon>
-      <div class="play-icon">
-        <el-icon @click="togglePlaying"><CaretRight /></el-icon>
+      <i class="icon iconfont icon-step-backward" @click="prev"></i>
+      <i class="icon iconfont icon-backward"></i>
+      <div class="play-icon" @click="togglePlaying">
+        <i class="icon iconfont" :class="iconClass"></i>
       </div>
-      <el-icon><DArrowRight /></el-icon>
+      <i class="icon iconfont icon-forward"></i>
+      <i class="icon iconfont icon-step-forward" @click="next"></i>
     </div>
     <!-- 右侧 -->
     <div class="mode">
@@ -108,8 +110,12 @@ const togglePlaying = () => {
     musicStore.playing = !musicStore.playing
   }
 }
+const iconClass = computed(() => {
+  return musicStore.playing ? ' icon-poweroff-circle-fill' : 'icon-play-circle-fill'
+})
 // 准备播放
 const ready = () => {
+  console.log('准备播放');
   songReady.value = true
 }
 // 播放结束
@@ -128,17 +134,22 @@ const next = () => {
   }
 }
 // 上一首
-// const prev = () => {
-//   if (songReady.value) {
-//     // musicStore.prevSong()
-//   }
-// }
+const prev = () => {
+  if (songReady.value) {
+    musicStore.startSong(musicStore.prevSong)
+  }
+}
 const audioRef = ref()
 const play = async () => {
-  if (songReady.value && audioRef.value) {
+  console.log('开始播放');
+  console.log('songReady', songReady.value);
+  console.log('audioRef', audioRef.value);
+  if (audioRef.value && songReady.value) {
     try {
       audioRef.value.currentTime = musicStore.currentTime
-      await audioRef.value.play()
+      nextTick(() => {
+        audioRef.value.play()
+      })
     } catch (error) {
       console.log('播放失败', error)
     }
@@ -149,6 +160,7 @@ onMounted(() => {
   musicStore.audioElement = audioRef.value
 })
 
+// 监听播放状态
 watch(
   () => musicStore.playing,
   (newVal) => {
@@ -156,6 +168,15 @@ watch(
       play()
     } else {
       audioRef.value?.pause()
+    }
+  }
+)
+// 监听歌曲变化
+watch(
+  () => musicStore.currentSong,
+  (newVal) => {
+    if (newVal) {
+      play()
     }
   }
 )
@@ -255,22 +276,16 @@ watch(
     .play-icon {
       @include flex-center();
       position: relative;
-      width: 45px;
-      height: 45px;
       margin: 0 16px;
-      border-radius: 50%;
-      background: #d33a31;
       cursor: pointer;
-
       i {
-        color: #fff;
-      }
-      .icon-play {
-        transform: translateX(1px);
+        font-size: 50px;
+        color: #d33a31;
       }
     }
 
     .icon {
+      font-size: 30px;
       color: #d33a31;
     }
   }

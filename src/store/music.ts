@@ -28,7 +28,7 @@ interface musicState {
   isPlaylistShow: boolean
   isPlaylistPromptShow: boolean
   isPlayerShow: boolean
-  playlist: []
+  playlist: any[]
   playHistoryList: string[]
   isMenuShow: boolean
   audioElement: HTMLAudioElement | null
@@ -69,6 +69,14 @@ export const useMusicStore = defineStore('music', {
         nextIndex = 0
       }
       return state.playlist[nextIndex]
+    },
+    prevSong(state): songType {
+      const index = state.playlist.findIndex((item: {id: string}) => item.id === state.currentSong.id)
+      let prevIndex = index - 1
+      if (prevIndex === -1) {
+        prevIndex = state.playlist.length - 1
+      }
+      return state.playlist[prevIndex]
     }
   },
   actions: {

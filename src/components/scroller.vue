@@ -23,6 +23,7 @@ const container = ref<HTMLElement | null>(null)
 const ulRef = ref<HTMLElement | null>(null)
 const liRef = ref<HTMLElement[] | null>(null)
 function setOffset() {
+  console.log('setOffset');
   if (container.value && ulRef.value) {
     const index = findIndex()
 
@@ -65,7 +66,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .container {
-  height: 600px;
+  height: 400px;
   overflow: hidden;
   /* border: 2px solid #fff; */
 }

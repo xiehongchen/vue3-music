@@ -20,14 +20,7 @@ import { getNewSongs } from "@/api"
 import { createSong } from "@/utils"
 import { useMusicStore } from '@/store/music'
 const musicStore = useMusicStore()
-interface listType {
-  copywriter: string;
-  id: string;
-  picUrl: string;
-  name: string;
-  [key: string | number]: any;
-}
-const list = ref<listType[]>([]);
+const list = ref<any[]>([]);
 onMounted(() => {
   getList()
 });
@@ -75,6 +68,7 @@ const onClickSong = (listIndex: number, index: any) => {
   console.log(listIndex, index)
   const nomalizedSongIndex = getSongOrder(listIndex, index) - 1
   const nomalizedSong = normalizedSongs.value[nomalizedSongIndex]
+  musicStore.playlist = normalizedSongs.value
   musicStore.startSong(nomalizedSong)
 }
 </script>

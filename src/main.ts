@@ -12,6 +12,7 @@ import App from './App.vue'
 import router from './router'
 import pinia from './store'
 import '@/style/index.scss'
+import '@/assets/iconfont/iconfont.css'
 import VueLazyload from "vue-lazyload"
 import * as utils from "@/utils"
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
