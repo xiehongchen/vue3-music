@@ -44,38 +44,13 @@
     <!-- 右侧 -->
     <div class="mode">
       <!-- 模式 -->
-      <el-popover placement="top" trigger="hover" width="160">
-        <p slot="-">{{ playModeText }}</p>
-        <template #reference><el-icon><DArrowLeft /></el-icon></template>
-        
-        <!-- <Icon
-          :size="20"
-          :type="modeIcon"
-          @click="onChangePlayMode"
-          class="mode-item"
-          slot="reference"
-        /> -->
-      </el-popover>
-      <!-- 播放列表 -->
-      <!-- <el-popover
-        :value="isPlaylistPromptShow"
-        placement="top"
-        trigger="manual"
-        width="160"
-      >
-        <p>已更新歌单</p>
-        <Icon
-          :size="20"
-          @click="togglePlaylistShow"
-          class="mode-item"
-          slot="reference"
-          type="playlist"
-        />
-      </el-popover> -->
       <!-- 音量 -->
-      <!-- <div class="volume-item">
-        <Volume :volume="volume" @volumeChange="onVolumeChange" />
-      </div> -->
+      <div class="volume-icon" @click="volumeIconChange">
+        <i class="icon iconfont" :class="volumeIcon"></i>
+      </div>
+      <div class="volume-item">
+        <el-slider v-model="volume" :min="0" :max="1" :step="0.1" :show-tooltip="false" @change="volumeChange"/>
+      </div>
     </div>
     <audio
       :src="currentSong.url"
@@ -101,8 +76,6 @@ const togglePlayerShow = () => {
 }
 
 // const isPlayErrorPromptShow = ref(false)
-
-const playModeText = ref('123')
 
 const songReady = ref(false)
 const togglePlaying = () => {
@@ -170,9 +143,42 @@ const play = async () => {
   }
 }
 
+// 监听音量
+const volume = ref(0)
+const volumeIcon = ref('icon-shengyin')
+const volumeChange = (val: number) => {
+  console.log('val', val);
+  if (audioRef.value) {
+    audioRef.value.volume = val
+    if (val === 0) {
+      volumeIcon.value = 'icon-shengyinjingyin'
+    } else {
+      volumeIcon.value = 'icon-shengyin'
+    }
+  }
+}
+
+// 音量图标切换
+const volumeIconChange = () => {
+  if (audioRef.value) {
+    if (volumeIcon.value === 'icon-shengyin') {
+      volumeIcon.value = 'icon-shengyinjingyin'
+      audioRef.value.volume = 0
+      volume.value = 0
+    } else {
+      volumeIcon.value = 'icon-shengyin'
+      audioRef.value.volume = 1
+      volume.value = 1
+    }
+  }
+}
+
 onMounted(() => {
   musicStore.audioElement = audioRef.value
+  volume.value = audioRef.value?.volume || 0
+  volumeIcon.value = audioRef.value?.volume === 0 ? 'icon-shengyinjingyin' : 'icon-shengyin'
 })
+
 
 // 监听播放状态
 watch(
@@ -315,9 +321,15 @@ watch(
       margin-right: 16px;
       width: 22px;
     }
-
+    .volume-icon {
+      margin-right: 10px;
+      .icon {
+        font-size: 30px;
+      }
+    }
     .volume-item {
       margin-right: 22px;
+      width: 200px;
     }
   }
 
