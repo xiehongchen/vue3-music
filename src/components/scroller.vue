@@ -1,8 +1,9 @@
 <template>
   <div class="container" ref="container">
     <ul class="list" ref="ulRef">
-      <li v-for="(item, index) in data" :key="index" ref="liRef">
-        {{ item.word }}
+      <li v-for="(item, index) in data" :key="index" ref="liRef" @click="changeLyric(item)">
+        <span>{{ item.word }}</span>
+        <span class="time">{{ item.time }}</span>
       </li>
     </ul>
   </div>
@@ -59,6 +60,16 @@ function findIndex () {
   return props.data.length - 1
 }
 
+// 根据歌词时间跳转
+const changeLyric = (item: wordType) => {
+  if (musicStore.audioElement) {
+    musicStore.currentTime = item.time
+    musicStore.audioElement.currentTime = item.time
+    musicStore.playing = true
+    setOffset()
+  }
+}
+
 onMounted(() => {
   musicStore.audioElement?.addEventListener('timeupdate', setOffset)
 })
@@ -67,25 +78,33 @@ onMounted(() => {
 <style lang="scss" scoped>
 .container {
   height: 400px;
-  overflow: hidden;
-  /* border: 2px solid #fff; */
-}
-.container ul {
-  /* border: 2px solid #fff; */
-  transition: 0.6s;
-  list-style: none;
-}
-.container li {
-  height: 30px;
-  /* border: 1px solid #fff; */
-  line-height: 30px;
-  text-align: center;
-  transition: 0.2s;
-}
-.container li.active {
-  color: blue;
-  /* font-size: ; */
-  transform: scale(1.2);
-}
+  overflow: scroll;
+  ul {
+    transition: 0.6s;
+    list-style: none;
+    li {
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      transition: 0.2s;
+      cursor: pointer;
+      &.active {
+        color: blue;
+        transform: scale(1.2);
+      }
+      .time {
+        margin-left: 10px;
+        margin-right: 50px;
+        display: none;
 
+      }
+      &:hover {
+        .time {
+          display: inline;
+          float: right;
+        }
+      }
+    }
+  }
+}
 </style>

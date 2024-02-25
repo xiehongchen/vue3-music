@@ -34,11 +34,11 @@
     <!-- 中间 -->
     <div class="control">
       <i class="icon iconfont icon-step-backward" @click="prev"></i>
-      <i class="icon iconfont icon-backward"></i>
+      <i class="icon iconfont icon-backward" @click="back"></i>
       <div class="play-icon" @click="togglePlaying">
         <i class="icon iconfont" :class="iconClass"></i>
       </div>
-      <i class="icon iconfont icon-forward"></i>
+      <i class="icon iconfont icon-forward" @click="forward"></i>
       <i class="icon iconfont icon-step-forward" @click="next"></i>
     </div>
     <!-- 右侧 -->
@@ -137,6 +137,20 @@ const next = () => {
 const prev = () => {
   if (songReady.value) {
     musicStore.startSong(musicStore.prevSong)
+  }
+}
+// 后退15秒
+const back = () => {
+  if (songReady.value) {
+    musicStore.currentTime -= 15
+    audioRef.value.currentTime = musicStore.currentTime
+  }
+}
+// 前进15秒
+const forward = () => {
+  if (songReady.value) {
+    musicStore.currentTime += 15
+    audioRef.value.currentTime = musicStore.currentTime
   }
 }
 const audioRef = ref()
