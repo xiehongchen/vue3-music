@@ -46,76 +46,77 @@
             <div v-if="nolyric">还没有歌词哦~</div>
             <scroller :data="lyricList"></scroller>
           </div>
-          <!-- <div class="bottom">
-            <div class="left">
-              <Comments
-                :id="currentSong.id"
-                ref="comments"
-                v-if="currentSong.id"
-              />
-            </div>
-            <div
-              class="right"
-              v-if="simiPlaylists.concat(simiSongs).length"
-            >
-              <Loading
-                :loading="simiLoading"
-                v-if="simiLoading"
-              />
-              <div v-else>
+        </div>
+        <div class="bottom">
+          <div class="left">
+            <comment-list
+              :id="currentSong.id"
+              type="song"
+              ref="comments"
+              v-if="currentSong.id"
+            />
+          </div>
+          <div
+            class="right"
+            v-if="simiPlaylist.concat(simiSong).length"
+          >
+            <Loading
+              :loading="simiLoading"
+              v-if="simiLoading"
+            />
+            <div v-else>
+              <!-- <div
+                class="simi-playlists"
+                v-if="simiPlaylists.length"
+              >
+                <p class="title">包含这首歌的歌单</p>
                 <div
-                  class="simi-playlists"
-                  v-if="simiPlaylists.length"
+                  :key="simiPlaylist.id"
+                  class="simi-item"
+                  v-for="simiPlaylist in simiPlaylists"
                 >
-                  <p class="title">包含这首歌的歌单</p>
-                  <div
-                    :key="simiPlaylist.id"
-                    class="simi-item"
-                    v-for="simiPlaylist in simiPlaylists"
+                  <Card
+                    :img="simiPlaylist.coverImgUrl"
+                    :name="simiPlaylist.name"
+                    @click="onClickPlaylist(simiPlaylist.id)"
                   >
-                    <Card
-                      :img="simiPlaylist.coverImgUrl"
-                      :name="simiPlaylist.name"
-                      @click="onClickPlaylist(simiPlaylist.id)"
-                    >
-                      <template v-slot:desc>
-                        <div class="desc">
-                          <Icon
-                            :size="12"
-                            color="shallow"
-                            type="play"
-                          />
-                          <p class="count">{{$utils.formatNumber(simiPlaylist.playCount)}}</p>
-                        </div>
-                      </template>
-                    </Card>
-                  </div>
+                    <template v-slot:desc>
+                      <div class="desc">
+                        <Icon
+                          :size="12"
+                          color="shallow"
+                          type="play"
+                        />
+                        <p class="count">{{formatNumber(simiPlaylist.playCount)}}</p>
+                      </div>
+                    </template>
+                  </Card>
                 </div>
+              </div> -->
+              <!-- <div
+                class="simi-songs"
+                v-if="simiSongs.length"
+              >
+                <p class="title">相似歌曲</p>
                 <div
-                  class="simi-songs"
-                  v-if="simiSongs.length"
+                  :key="simiSong.id"
+                  class="simi-item"
+                  v-for="simiSong in simiSongs"
                 >
-                  <p class="title">相似歌曲</p>
-                  <div
-                    :key="simiSong.id"
-                    class="simi-item"
-                    v-for="simiSong in simiSongs"
+                  <Card
+                    :desc="simiSong.artistsText"
+                    :img="simiSong.img"
+                    :name="simiSong.name"
+                    @click="onClickSong(simiSong)"
                   >
-                    <Card
-                      :desc="simiSong.artistsText"
-                      :img="simiSong.img"
-                      :name="simiSong.name"
-                      @click="onClickSong(simiSong)"
-                    >
-                      <template v-slot:img-mask>
-                        <PlayIcon class="play-icon" />
-                      </template>
-                    </Card>
-                  </div>
+                    <template v-slot:img-mask>
+                      <PlayIcon class="play-icon" />
+                    </template>
+                  </Card>
                 </div>
-              </div>
+              </div> -->
             </div>
-          </div> -->
+          </div>
         </div>
       </div>
     </div>
@@ -123,8 +124,8 @@
 </template>
 
 <script setup lang='ts'>
-import { getLyric } from '@/api/song'
-import { getImgUrl } from '@/utils'
+import { getSimiSongs, getLyric, getSimiPlaylists } from '@/api'
+import { getImgUrl, createSong } from '@/utils'
 import { useMusicStore } from '@/store/music'
 const musicStore = useMusicStore()
 const hasCurrentSong = computed(() => musicStore.hasCurrentSong)
@@ -134,10 +135,6 @@ const getPlayerShowCls = computed(() => {
   return musicStore.isPlayerShow ? 'show' : 'hide'
 })
 
-// 更新歌曲
-const updateSong = () => {
-  updateLyric()
-}
 // 没有歌词
 const nolyric = ref(false)
 // 歌词数据
@@ -208,11 +205,6 @@ const getActiveCls = (index: number) => {
 
 console.log(getActiveCls);
 
-
-watch(() => currentSong.value.id, () => {
-  updateSong()
-}, { immediate: true })
-
 function lyricParser(lyric: any) {
   return {
     'lyric': parseLyric(lyric.lrc.lyric || ''), 
@@ -221,6 +213,48 @@ function lyricParser(lyric: any) {
     'transuser': lyric.transUser,
   }
 }
+
+const simiPlaylist = ref([])
+const simiSong = ref([])
+const simiLoading = ref(false)
+const updateSimi = async () => {
+  simiLoading.value = true
+  const [simiPlaylists, simiSongs] = await Promise.all([
+    getSimiPlaylists(currentSong.value.id),
+    getSimiSongs(currentSong.value.id!, {})
+  ]).finally(() => {
+    simiLoading.value = false
+  }) as any
+  simiPlaylist.value = simiPlaylists
+  simiSong.value = simiSongs.song.map((song: any) => {
+    const {
+      id,
+      name,
+      artists,
+      mvid,
+      album: { picUrl },
+      duration
+    } = song
+    return createSong({
+      id,
+      name,
+      artists,
+      duration,
+      img: picUrl,
+      mvId: mvid
+    })
+  })
+}
+// 更新歌曲
+const updateSong = () => {
+  updateLyric()
+  updateSimi()
+}
+watch(() => currentSong.value.id, () => {
+  updateSong()
+}, { immediate: true })
+
+
 // 解析歌词字符串
 function parseLyric(lrc: any) {
   var lines = lrc.split('\n');
@@ -273,7 +307,7 @@ $img-outer-d: 300px;
   transition: transform 0.5s;
 
   &.hide {
-    transform: translateY(105%);
+    transform: translateY(120%);
   }
 
   &.show {

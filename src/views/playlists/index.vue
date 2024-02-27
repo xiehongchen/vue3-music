@@ -27,7 +27,8 @@
       </playlist-card>
     </div>
     <el-pagination 
-      layout="prev, pager, next" 
+      layout="prev, pager, next"
+      :current-page="pagination.currentPage"
       :page-size="pagination.pageSize" 
       :total="pagination.total"
       @current-change="currentChange">

@@ -10,7 +10,7 @@
       >
         <p class="title">精彩评论</p>
         <CommentItem
-          v-for="(item, index) in commentList"
+          v-for="(item, index) in hotCommentList"
           :comment="item"
           :key="index"
         ></CommentItem>
@@ -26,14 +26,15 @@
           最新评论
           <span class="count">({{pagination.total}})</span>
           <CommentItem
-          v-for="(item, index) in hotCommentList"
+          v-for="(item, index) in commentList"
           :comment="item"
           :key="index"
         ></CommentItem>
         </p>
       </div>
       <el-pagination 
-        layout="prev, pager, next" 
+        layout="prev, pager, next"
+        :current-page="pagination.currentPage"
         :page-size="pagination.pageSize" 
         :total="pagination.total"
         @current-change="currentChange">
@@ -52,7 +53,7 @@ import {
 import { getPageOffset } from '@/utils';
 const props =defineProps({
   id: {
-    type: String,
+    type: [String, Number],
     default: ''
   },
   type: {
@@ -68,8 +69,8 @@ const pagination = reactive({
   pageSize: 50,
   total: 0
 })
-const shouldHotCommentShow = computed(() => hotCommentList.value && pagination.currentPage === 1)
-const shouldCommentShow = computed(() => commentList.value)
+const shouldHotCommentShow = computed(() => hotCommentList.value.length && pagination.currentPage === 1)
+const shouldCommentShow = computed(() => commentList.value.length)
 
 const getComment = async () => {
   loading.value = true
@@ -82,7 +83,7 @@ const getComment = async () => {
   const { hotComments = [], comments = [], total } = await commentRequest({
     id: props.id,
     pageSize: pagination.pageSize,
-    offset: getPageOffset(1, 20)
+    offset: getPageOffset(pagination.currentPage, 20)
   }) as any
 
   // 歌单的热评需要单独请求接口获取
@@ -101,16 +102,19 @@ const getComment = async () => {
 }
 const commentRef = ref()
 const currentChange = (page: number) => {
+  console.log('page', page)
   pagination.currentPage = page
   getComment()
   // 回到前面
   commentRef.value?.scrollIntoView({ behavior: "smooth" })
 }
-onMounted(() => {
-  if (props.id) {
-    getComment();
-  }
-});
+watch(
+  () => props.id,
+  () => {
+    getComment()
+  },
+  { immediate: true }
+)
 </script>
 
 <style lang="scss" scoped>

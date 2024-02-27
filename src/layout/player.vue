@@ -205,7 +205,6 @@ watch(
 <style lang="scss" scoped>
 .layout-player {
   position: relative;
-  position: fixed;
   z-index: 1002;
   bottom: 0;
   left: 0;

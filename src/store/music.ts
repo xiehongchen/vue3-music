@@ -2,7 +2,7 @@
  * @Author: xiehongchen 1754581057@qq.com
  * @Date: 2024-02-04 11:02:08
  * @LastEditors: xiehongchen 1754581057@qq.com
- * @LastEditTime: 2024-02-23 12:14:40
+ * @LastEditTime: 2024-02-27 18:10:53
  * @FilePath: /vue3-music/src/store/music.ts
  * @Description: 
  * 认真学习每一天
@@ -29,7 +29,7 @@ interface musicState {
   isPlaylistPromptShow: boolean
   isPlayerShow: boolean
   playlist: any[]
-  playHistoryList: string[]
+  playHistoryList: any[]
   isMenuShow: boolean
   audioElement: HTMLAudioElement | null
 }
@@ -59,9 +59,11 @@ export const useMusicStore = defineStore('music', {
     audioElement: null
   }),
   getters: {
+    // 当前是否有歌曲
     hasCurrentSong(state): boolean {
       return state.currentSong.id !== undefined
     },
+    // 下一首
     nextSong(state): songType {
       const index = state.playlist.findIndex((item: {id: string}) => item.id === state.currentSong.id)
       let nextIndex = index + 1
@@ -70,6 +72,7 @@ export const useMusicStore = defineStore('music', {
       }
       return state.playlist[nextIndex]
     },
+    // 上一首
     prevSong(state): songType {
       const index = state.playlist.findIndex((item: {id: string}) => item.id === state.currentSong.id)
       let prevIndex = index - 1
@@ -93,6 +96,15 @@ export const useMusicStore = defineStore('music', {
       }
       this.currentSong = song
       this.playing = true
+      const isAddHistory = this.playHistoryList.find((song: songType) => song.id === this.currentSong.id)
+      if (!isAddHistory) {
+        if (this.playHistoryList.length > 20) {
+          this.playHistoryList.pop()
+          this.playHistoryList.push(this.currentSong)
+        } else {
+          this.playHistoryList.push(this.currentSong)
+        }
+      }
     },
     clearCurrentSong () {
       this.currentSong = {}
@@ -115,7 +127,6 @@ export const useMusicStore = defineStore('music', {
     },
     clearHistory() {
       this.playHistoryList = []
-      localStorage.setItem('history-list', '')
     },
     addToPlaylist (song: any) {
       const copy = this.playlist as any[]
