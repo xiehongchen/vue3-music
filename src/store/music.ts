@@ -9,8 +9,17 @@
  */
 
 import { getSongImg, shallowEqual } from "@/utils";
-import { playModeMap } from "@/utils/config";
 import { defineStore } from "pinia";
+
+const playType = {
+  // 顺序播放
+  sequence: 'icon-shunxubofang',
+  // 单曲循环
+  loop: 'icon-danquxunhuan',
+  // 随机播放
+  random: 'icon-suijibofang'
+}
+
 interface songType {
   img?: string
   id?: string
@@ -42,7 +51,7 @@ export const useMusicStore = defineStore('music', {
     // 播放状态
     playing: false,
     // 播放模式
-    playMode: playModeMap.sequence.code,
+    playMode: playType.sequence,
     // 播放列表显示
     isPlaylistShow: false,
     // 播放提示显示
@@ -62,27 +71,57 @@ export const useMusicStore = defineStore('music', {
     // 当前是否有歌曲
     hasCurrentSong(state): boolean {
       return state.currentSong.id !== undefined
-    },
-    // 下一首
-    nextSong(state): songType {
-      const index = state.playlist.findIndex((item: {id: string}) => item.id === state.currentSong.id)
-      let nextIndex = index + 1
-      if (nextIndex === state.playlist.length) {
-        nextIndex = 0
-      }
-      return state.playlist[nextIndex]
-    },
-    // 上一首
-    prevSong(state): songType {
-      const index = state.playlist.findIndex((item: {id: string}) => item.id === state.currentSong.id)
-      let prevIndex = index - 1
-      if (prevIndex === -1) {
-        prevIndex = state.playlist.length - 1
-      }
-      return state.playlist[prevIndex]
     }
   },
   actions: {
+    // 改变播放模式
+    changePlayMode() {
+      if (this.playMode === playType.sequence) {
+        this.playMode = playType.loop
+      } else if (this.playMode === playType.loop) {
+        this.playMode = playType.random
+      } else {
+        this.playMode = playType.sequence
+      }
+    },
+    // 播放下一首
+    playNext() {
+      let song
+      if (this.playMode === playType.random) {
+        const length = this.playlist.length
+        const index = Math.floor(Math.random() * length)
+        song = this.playlist[index]
+      } else if (this.playMode === playType.loop) {
+        song = this.currentSong
+      } else {
+        const index = this.playlist.findIndex((item: {id: string}) => item.id === this.currentSong.id)
+        let nextIndex = index + 1
+        if (nextIndex === this.playlist.length) {
+          nextIndex = 0
+        }
+        song = this.playlist[nextIndex]
+      }
+      this.startSong(song)
+    },
+    // 播放上一首
+    playPrev() {
+      let song
+      if (this.playMode === playType.random) {
+        const length = this.playlist.length
+        const index = Math.floor(Math.random() * length)
+        song = this.playlist[index]
+      } else if (this.playMode === playType.loop) {
+        song = this.currentSong
+      } else {
+        const index = this.playlist.findIndex((item: {id: string}) => item.id === this.currentSong.id)
+        let nextIndex = index - 1
+        if (nextIndex === this.playlist.length) {
+          nextIndex = 0
+        }
+        song = this.playlist[nextIndex]
+      }
+      this.startSong(song)
+    },
     // 整合歌曲信息 并且开始播放
     async startSong(rawSong: any) {
       // 浅拷贝一份 改变引用
@@ -94,6 +133,7 @@ export const useMusicStore = defineStore('music', {
           song.img = await getSongImg(song.id, song.albumId)
         }
       }
+      console.log('song', song)
       this.currentSong = song
       this.playing = true
       const isAddHistory = this.playHistoryList.find((song: songType) => song.id === this.currentSong.id)

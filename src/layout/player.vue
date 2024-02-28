@@ -44,6 +44,9 @@
     <!-- 右侧 -->
     <div class="mode">
       <!-- 模式 -->
+      <div class="mode-item" @click="changeMode">
+        <i class="icon iconfont" :class="musicStore.playMode"></i>
+      </div>
       <!-- 音量 -->
       <div class="volume-icon" @click="volumeIconChange">
         <i class="icon iconfont" :class="volumeIcon"></i>
@@ -77,6 +80,11 @@ const togglePlayerShow = () => {
 
 // const isPlayErrorPromptShow = ref(false)
 
+// 更换播放模式
+const changeMode = () => {
+  musicStore.changePlayMode()
+}
+
 const songReady = ref(false)
 const togglePlaying = () => {
   if (currentSong.value.id) {
@@ -103,13 +111,13 @@ const updateTime = (e: Event) => {
 // 下一首
 const next = () => {
   if (songReady.value) {
-    musicStore.startSong(musicStore.nextSong)
+    musicStore.playNext()
   }
 }
 // 上一首
 const prev = () => {
   if (songReady.value) {
-    musicStore.startSong(musicStore.prevSong)
+    musicStore.playPrev()
   }
 }
 // 后退15秒
@@ -316,9 +324,7 @@ watch(
     flex: 6;
 
     .mode-item {
-      display: block;
       margin-right: 16px;
-      width: 22px;
     }
     .volume-icon {
       margin-right: 10px;
@@ -341,6 +347,7 @@ watch(
 }
 
 .icon {
+  font-size: 30px;
   color: #4a4a4a;
   cursor: pointer;
 }

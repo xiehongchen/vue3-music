@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "7417088",
+      "name": "随机播放",
+      "font_class": "suijibofang",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "7594078",
+      "name": "24gl-repeatOnce",
+      "font_class": "24gl-repeatOnce",
+      "unicode": "ea75",
+      "unicode_decimal": 60021
+    },
+    {
+      "icon_id": "33711679",
+      "name": "单曲循环",
+      "font_class": "danquxunhuan",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "34218745",
+      "name": "顺序播放",
+      "font_class": "shunxubofang",
+      "unicode": "e871",
+      "unicode_decimal": 59505
+    },
+    {
       "icon_id": "6598350",
       "name": "step-backward",
       "font_class": "step-backward",

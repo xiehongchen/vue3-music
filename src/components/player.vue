@@ -56,10 +56,7 @@
               v-if="currentSong.id"
             />
           </div>
-          <div
-            class="right"
-            v-if="simiPlaylist.concat(simiSong).length"
-          >
+          <div class="right">
             <Loading
               :loading="simiLoading"
               v-if="simiLoading"
@@ -226,7 +223,8 @@ const updateSimi = async () => {
     simiLoading.value = false
   }) as any
   simiPlaylist.value = simiPlaylists
-  simiSong.value = simiSongs.song.map((song: any) => {
+  console.log('simiSongs', simiSongs)
+  simiSong.value = simiSongs.songs.map((song: any) => {
     const {
       id,
       name,

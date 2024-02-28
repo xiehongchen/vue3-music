@@ -12,7 +12,7 @@
     </el-table-column>
     <el-table-column prop="img" label="" width="100">
       <template #default="scope">
-        <div class="img-wrap">
+        <div class="img-wrap" @click="start(scope.row)">
           <img v-lazy="getImgUrl(scope.row.img, 120)">
           <PlayIcon class="play-icon" />
         </div>
@@ -47,6 +47,10 @@ defineProps({
 const isActiveSong = (song: any) => {
   return song.id === musicStore.currentSong
 }
+
+const start = (song: any) => {
+  musicStore.startSong(song)
+}
 </script>
 
 <style scoped lang='scss'>
@@ -80,6 +84,7 @@ const isActiveSong = (song: any) => {
   .img-wrap {
     position: relative;
     @include img-wrap(60px);
+    cursor: pointer;
 
     img {
       border-radius: 4px;

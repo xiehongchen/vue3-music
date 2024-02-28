@@ -31,6 +31,7 @@ declare module 'vue' {
     MvCard: typeof import('./src/components/mv-card.vue')['default']
     Player: typeof import('./src/components/player.vue')['default']
     PlayIcon: typeof import('./src/components/play-icon.vue')['default']
+    PlayList: typeof import('./src/components/play-list.vue')['default']
     PlaylistCard: typeof import('./src/components/playlist-card.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

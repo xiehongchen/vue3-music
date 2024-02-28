@@ -14,4 +14,4 @@ export const getPlaylists = (params: any) => request.get('/top/playlist', { para
 // 精品歌单
 export const getTopPlaylists = (params: any) => request.get('/top/playlist/highquality', { params })
 // 获取相似歌单
-export const getSimiPlaylists = (params: any) => request.get(`/simi/playlist?id=${params.id}`, params)
+export const getSimiPlaylists = (id: any) => request.get(`/simi/playlist?id=${id}`, {})

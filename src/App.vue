@@ -1,6 +1,7 @@
 <template>
   <Layout />
   <Player />
+  <PlayList />
 </template>
 
 <script setup lang="ts">
