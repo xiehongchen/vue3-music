@@ -47,6 +47,9 @@
       <div class="mode-item" @click="changeMode">
         <i class="icon iconfont" :class="musicStore.playMode"></i>
       </div>
+      <div class="mode-item" @click="changePlayListShow">
+        <i class="icon iconfont" :class="musicStore.isPlaylistShow ? 'icon-outdent' : 'icon-indent'"></i>
+      </div>
       <!-- 音量 -->
       <div class="volume-icon" @click="volumeIconChange">
         <i class="icon iconfont" :class="volumeIcon"></i>
@@ -83,6 +86,11 @@ const togglePlayerShow = () => {
 // 更换播放模式
 const changeMode = () => {
   musicStore.changePlayMode()
+}
+
+// 播放列表显示
+const changePlayListShow = () => {
+  musicStore.isPlaylistShow = !musicStore.isPlaylistShow
 }
 
 const songReady = ref(false)
