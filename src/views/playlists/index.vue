@@ -20,6 +20,7 @@
     <div class="play-list-card">
       <playlist-card
         v-for="item in playlists"
+        @clickCard="goPlaylistDetail(item.id)"
         :key="item.id"
         :img="item.coverImgUrl"
         :name="item.name"
@@ -39,6 +40,8 @@
 <script setup lang="ts">
 import { getPlaylists, getTopPlaylists } from '@/api'
 import { getPageOffset, formatNumber } from '@/utils';
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const tabs = reactive(["全部","欧美","华语","流行","说唱","摇滚","民谣","电子","轻音乐","影视原声","ACG","怀旧","治愈","旅行"])
 const state = reactive({
   topPlaylist: {} as any,
@@ -85,6 +88,9 @@ const currentChange = (page: number) => {
   console.log('playList', playList)
   // 回到前面
   playList.value?.scrollIntoView({ behavior: "smooth" })
+}
+const goPlaylistDetail = (id: number) => {
+  router.push(`/playlist/${id}`)
 }
 </script>
 
