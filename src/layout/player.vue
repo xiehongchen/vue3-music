@@ -58,12 +58,16 @@
         <el-slider v-model="volume" :min="0" :max="1" :step="0.1" :show-tooltip="false" @change="volumeChange"/>
       </div>
     </div>
+    <div class="progress-bar-wrap">
+      <progress-bar :percent="playPercent" :disabled="!hasCurrentSong" @change="percentChange" />
+    </div>
     <audio
       :src="currentSong.url"
       @canplay="ready"
       @ended="end"
       @timeupdate="updateTime"
       ref="audioRef"
+      @error="audioError"
     ></audio>
   </div>
 </template>
@@ -81,7 +85,12 @@ const togglePlayerShow = () => {
   musicStore.isPlayerShow = !musicStore.isPlayerShow
 }
 
-// const isPlayErrorPromptShow = ref(false)
+const playPercent = computed(() => {
+  if (!currentSong.value.durationSecond) return 0
+  const percent = Math.min(currentTime.value / currentSong.value.durationSecond, 1) || 0
+  // console.log('percent', percent);
+  return percent
+})
 
 // 更换播放模式
 const changeMode = () => {
@@ -115,6 +124,14 @@ const end = () => {
 const updateTime = (e: Event) => {
   const audio = e.target as HTMLAudioElement
   musicStore.currentTime = audio.currentTime
+}
+// 播放错误
+const audioError = (e: Event) => {
+  console.log('播放错误', e);
+  // songReady.value = false
+  setTimeout(() => {
+    next()
+  }, 1000)
 }
 // 下一首
 const next = () => {
@@ -189,10 +206,20 @@ const volumeIconChange = () => {
   }
 }
 
+// 监听播放进度
+const percentChange = (val: number) => {
+  console.log('val', val)
+  if (songReady.value && currentSong.value.durationSecond) {
+    musicStore.currentTime = currentSong.value.durationSecond * val
+    audioRef.value.currentTime = musicStore.currentTime
+  }
+}
+
 onMounted(() => {
   musicStore.audioElement = audioRef.value
   volume.value = audioRef.value?.volume || 0
   volumeIcon.value = audioRef.value?.volume === 0 ? 'icon-shengyinjingyin' : 'icon-shengyin'
+  console.log('audioRef', audioRef);
 })
 
 

@@ -28,6 +28,7 @@ interface songType {
   duration?: number
   mvId?: string
   url?: string
+  durationSecond?: number
 }
 interface musicState {
   currentSong: songType

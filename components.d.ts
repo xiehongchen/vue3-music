@@ -33,6 +33,7 @@ declare module 'vue' {
     PlayIcon: typeof import('./src/components/play-icon.vue')['default']
     PlayList: typeof import('./src/components/play-list.vue')['default']
     PlaylistCard: typeof import('./src/components/playlist-card.vue')['default']
+    ProgressBar: typeof import('./src/components/progress-bar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Scroller: typeof import('./src/components/scroller.vue')['default']
