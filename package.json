@@ -19,7 +19,8 @@
     "vant": "^4.8.0",
     "vue": "^3.3.8",
     "vue-lazyload": "^3.0.0",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "xgplayer": "3.0.0-alpha.119"
   },
   "devDependencies": {
     "@types/node": "^20.9.3",
