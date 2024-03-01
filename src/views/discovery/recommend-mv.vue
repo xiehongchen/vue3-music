@@ -4,7 +4,8 @@
     <div class="list-wrap">
       <div v-for="mv in mvs" :key="mv.id" class="list-item">
         <mv-card 
-          :img="mv.picUrl">
+          :img="mv.picUrl"
+          :id="mv.id">
         </mv-card>
       </div>
     </div>

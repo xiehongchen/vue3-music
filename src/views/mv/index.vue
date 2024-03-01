@@ -1,15 +1,15 @@
 <template>
-    <div class="mv">
+    <div class="mv" v-if="detail.id">
     <div class="mv-content">
       <div class="left">
         <p class="title">mv详情</p>
 
         <div class="player">
-          <!-- <VideoPlayer
-            :url="mvPlayInfo.url"
-            :poster="mvDetail.cover"
+          <VideoPlayer
+            :url="palyInfo.url"
+            :poster="detail.cover"
             ref="video"
-          /> -->
+          />
         </div>
       </div>
     </div>
@@ -17,7 +17,31 @@
 </template>
 
 <script setup lang="ts">
+import { getMvDetail, getMvUrl } from '@/api'
+import { useRoute } from 'vue-router'
+const route = useRoute()
 
+const detail = ref<any>({})
+const palyInfo = ref<any>() 
+const init = async () => {
+  const id = route.params.id as string
+  console.log('id', id)
+  const [
+    {data: mvDetail},
+    {data: mvPlayInfo}
+  ] = await Promise.all([
+    getMvDetail(id),
+    getMvUrl(id)
+  ])
+  detail.value = mvDetail
+  palyInfo.value = mvPlayInfo
+  console.log('mvDetail', detail.value)
+  console.log('mvPlayInfo', palyInfo.value)
+}
+
+onMounted(() => {
+  init()
+})
 </script>
 
 <style lang="scss" scoped>

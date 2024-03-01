@@ -4,7 +4,7 @@
 
 <script setup lang='ts'>
 import Player from 'xgplayer'
-import 'xgplayer/dist/index.min.css'
+import 'xgplayer/dist/xgplayer.min.css'
 const props = defineProps({
   url: {
     type: String,
@@ -17,6 +17,7 @@ const props = defineProps({
 
 })
 const initPlayer = () => {
+  console.log('props.url', props.url)
   if (!props.url) return
   new Player({
     id: 'mse',

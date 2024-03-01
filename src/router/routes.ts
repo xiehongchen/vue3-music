@@ -92,7 +92,6 @@ export const routes: RouteRecordRaw[] = [
         path: '/mv/:id',
         name: 'mv',
         component: () => import('@/views/mv/index.vue'),
-        props: (route) =>  ({id: +route.params.id}),
       },
       ...menuRoutes,
     ],

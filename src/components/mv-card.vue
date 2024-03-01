@@ -1,5 +1,5 @@
 <template>
-  <div class="mv-card">
+  <div class="mv-card" @click="goMv">
     <div class="img-wrap">
       <img v-lazy="getImgUrl(img, 500, 260)">
       <div class="play-count-wrap" v-if="playCount">
@@ -19,7 +19,13 @@
 
 <script setup lang="ts">
 import { getImgUrl, formatNumber, formatTime } from '@/utils';
-defineProps({
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const props = defineProps({
+  id: {
+    type: Number,
+    default: 0
+  },
   img: {
     type: String,
     default: ''
@@ -41,6 +47,14 @@ defineProps({
     default: ''
   }
 })
+
+const goMv = () => {
+  if (props.img) {
+    router.push({
+      path: `/mv/${props.id}`
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>

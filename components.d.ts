@@ -41,5 +41,6 @@ declare module 'vue' {
     SongTable: typeof import('./src/components/song-table.vue')['default']
     TopPlaylistCard: typeof import('./src/components/top-playlist-card.vue')['default']
     User: typeof import('./src/components/user.vue')['default']
+    VideoPlayer: typeof import('./src/components/video-player.vue')['default']
   }
 }
