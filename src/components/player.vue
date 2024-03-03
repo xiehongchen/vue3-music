@@ -85,28 +85,28 @@
                   </L-Card>
                 </div>
               </div>
-              <!-- <div
+              <div
                 class="simi-songs"
-                v-if="simiSongs.length"
+                v-if="simiSong.length"
               >
                 <p class="title">相似歌曲</p>
                 <div
-                  :key="simiSong.id"
+                  :key="item.id"
                   class="simi-item"
-                  v-for="simiSong in simiSongs"
+                  v-for="item in simiSong"
                 >
-                  <Card
-                    :desc="simiSong.artistsText"
-                    :img="simiSong.img"
-                    :name="simiSong.name"
-                    @click="onClickSong(simiSong)"
+                  <L-Card
+                    :desc="item.artistsText"
+                    :img="item.img"
+                    :name="item.name"
+                    @click="onClickSong(item)"
                   >
                     <template v-slot:img-mask>
                       <PlayIcon class="play-icon" />
                     </template>
-                  </Card>
+                  </L-Card>
                 </div>
-              </div> -->
+              </div>
             </div>
           </div>
         </div>
@@ -161,6 +161,10 @@ const onClickPlaylist = (id: string) => {
   router.push({
     path: `/playlist/${id}`
   })
+}
+
+const onClickSong = (song: any) => {
+  musicStore.startSong(song)
 }
 
 const lyricWithTranslation = computed(() => {
@@ -220,7 +224,7 @@ function lyricParser(lyric: any) {
 }
 
 const simiPlaylist = ref<any[]>([])
-const simiSong = ref([])
+const simiSong = ref<any[]>([])
 const simiLoading = ref(false)
 const updateSimi = async () => {
   simiLoading.value = true

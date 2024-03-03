@@ -3,7 +3,7 @@
     <ul class="list" ref="ulRef">
       <li v-for="(item, index) in data" :key="index" ref="liRef" @click="changeLyric(item)">
         <span>{{ item.word }}</span>
-        <span class="time">{{ item.time }}</span>
+        <span class="time">{{ formatTime(item.time) }}</span>
       </li>
     </ul>
   </div>
@@ -11,6 +11,7 @@
 
 <script setup lang="ts">
 import { useMusicStore } from '@/store/music'
+import { formatTime } from '@/utils'
 const musicStore = useMusicStore()
 interface wordType {
   time: number
@@ -83,25 +84,23 @@ onMounted(() => {
     transition: 0.6s;
     list-style: none;
     li {
-      height: 30px;
-      line-height: 30px;
+      padding: 5px 0;
+      min-height: 30px;
       text-align: center;
+      overflow-wrap: break-word;
       transition: 0.2s;
       cursor: pointer;
       &.active {
         color: blue;
-        transform: scale(1.2);
       }
       .time {
-        margin-left: 10px;
-        margin-right: 50px;
         display: none;
-
       }
       &:hover {
         .time {
           display: inline;
           float: right;
+          color: #f00;
         }
       }
     }

@@ -139,7 +139,7 @@ export const useMusicStore = defineStore('music', {
       this.playing = true
       const isAddHistory = this.playHistoryList.find((song: songType) => song.id === this.currentSong.id)
       if (!isAddHistory) {
-        if (this.playHistoryList.length > 20) {
+        if (this.playHistoryList.length >= 50) {
           this.playHistoryList.pop()
           this.playHistoryList.push(this.currentSong)
         } else {

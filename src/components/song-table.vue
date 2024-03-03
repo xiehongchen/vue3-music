@@ -1,6 +1,6 @@
 <template>
-  <el-table class="song-table" :data="songList">
-    <el-table-column prop="index" label="" width="70">
+  <el-table class="song-table" :data="songList" @cell-click="cleeClick">
+    <el-table-column prop="index" label="" width="70" v-if="!hideColumns.includes('index')">
       <template #default="scope">
         <div v-if="isActiveSong(scope.row)">
           
@@ -10,15 +10,15 @@
         </div>
       </template>
     </el-table-column>
-    <el-table-column prop="img" label="" width="100">
+    <el-table-column prop="img" label="" width="100" v-if="!hideColumns.includes('img')">
       <template #default="scope">
-        <div class="img-wrap" @click="start(scope.row)">
+        <div class="img-wrap">
           <img v-lazy="getImgUrl(scope.row.img, 120)">
           <PlayIcon class="play-icon" />
         </div>
       </template>
     </el-table-column>
-    <el-table-column prop="name" lable="">
+    <el-table-column prop="name" lable="" width="160">
       <template #default="scope">
         <div style="display: flex;">
           <div>{{ scope.row.name }}</div>
@@ -31,7 +31,7 @@
       </template>
     </el-table-column>
     <el-table-column prop="artistsText" label=""></el-table-column>
-    <el-table-column prop="albumName" label=""></el-table-column>
+    <el-table-column prop="albumName" label="" v-if="!hideColumns.includes('albumName')"></el-table-column>
     <el-table-column prop="albumNdurationSecondame" label="" width="100">
       <template #default="scope">
         <div>
@@ -52,6 +52,10 @@ const props = defineProps({
   songList: {
     type: Array,
     default: []
+  },
+  hideColumns: {
+    type: Array,
+    default: () => []
   }
 })
 
@@ -60,18 +64,22 @@ const isActiveSong = (song: any) => {
   return song.id === musicStore.currentSong
 }
 
-const start = (song: any) => {
-  console.log('props.songList', props.songList)
-  const list = props.songList.filter((item: any) => item.mvId)
-  console.log('list', list)
+const cleeClick = (song: any) => {
+  if (musicStore.isPlaylistShow) {
+    musicStore.isPlaylistShow = false
+  }
   musicStore.startSong(song)
 }
 const onGoMv = (id: string) => {
   musicStore.isPlayerShow = false
+  if (musicStore.isPlaylistShow) {
+    musicStore.isPlaylistShow = false
+  }
   router.push({
     path: `/mv/${id}`
   })
 }
+
 </script>
 
 <style scoped lang='scss'>
@@ -133,7 +141,9 @@ const onGoMv = (id: string) => {
     display: inline-block;
     margin-left: 8px;
     padding: 2px;
+    max-height: 30px;
     border: 1px solid currentColor;
+    white-space: nowrap;
     border-radius: 2px;
     color: red;
     cursor: pointer;
