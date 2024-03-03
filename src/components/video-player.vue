@@ -5,6 +5,9 @@
 <script setup lang='ts'>
 import Player from 'xgplayer'
 import 'xgplayer/dist/xgplayer.min.css'
+import { useMusicStore } from '@/store/music'
+const musicStore = useMusicStore()
+const playing = computed(() => musicStore.playing)
 const props = defineProps({
   url: {
     type: String,
@@ -16,10 +19,11 @@ const props = defineProps({
   }
 
 })
+const player = ref()
 const initPlayer = () => {
   console.log('props.url', props.url)
   if (!props.url) return
-  new Player({
+  player.value = new Player({
     id: 'mse',
     url: props.url,
     poster: props.poster,
@@ -32,13 +36,27 @@ const initPlayer = () => {
 
 onMounted(() => {
   initPlayer()
+  player.value.on('play', () => {
+    musicStore.playing = false
+  })
 })
 
 watch(() => props.url, (newUrl, oldUrl) => {
   if (newUrl && newUrl !== oldUrl) {
-    initPlayer()
-  } else {
-    
+    if (!player.value) {
+      initPlayer()
+    } else {
+      player.value.src = newUrl
+      player.value.reload()
+    }
+  }
+})
+
+watch(() => playing.value, (newPlaying) => {
+  if (player.value) {    
+    if (newPlaying) {
+      player.value.pause()
+    }
   }
 })
 </script>
