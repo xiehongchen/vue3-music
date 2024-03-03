@@ -67,7 +67,7 @@ const isRouteMode = computed(() => props.data.length && (props.data[0] as any).t
 const tabs = computed(() => {
   return typeof props.data[0] === 'string' ? props.data.map(tab => ({ title: tab })) : props.data
 })
-
+console.log('tabs', tabs.value)
 const onChangeTab = (tab: any, index: number) => {
   console.log(tab, index)
   if (isRouteMode.value) {

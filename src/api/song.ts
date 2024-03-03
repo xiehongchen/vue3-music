@@ -10,7 +10,7 @@ export const getSongDetail = (ids: string) => request.get(`/song/detail?ids=${id
 export const getTopSongs = (type: number) => request.get(`/top/song?type=${type}`)
 
 // 相似音乐
-export const getSimiSongs = (id: string, option: any) => request.get(`/simi/song?id=${id}`, option)
+export const getSimiSongs = (id: string) => request.get(`/simi/song?id=${id}`)
 
 // 歌词
 export const getLyric = (id: string) => request.get(`/lyric?id=${id}`)

@@ -57,39 +57,34 @@
             />
           </div>
           <div class="right">
-            <Loading
+            <L-Loading
               :loading="simiLoading"
               v-if="simiLoading"
             />
             <div v-else>
-              <!-- <div
+              <div
                 class="simi-playlists"
-                v-if="simiPlaylists.length"
+                v-if="simiPlaylist.length"
               >
                 <p class="title">包含这首歌的歌单</p>
                 <div
-                  :key="simiPlaylist.id"
+                  :key="item.id"
                   class="simi-item"
-                  v-for="simiPlaylist in simiPlaylists"
+                  v-for="item in simiPlaylist"
                 >
-                  <Card
-                    :img="simiPlaylist.coverImgUrl"
-                    :name="simiPlaylist.name"
-                    @click="onClickPlaylist(simiPlaylist.id)"
+                  <L-Card
+                    :img="item.coverImgUrl"
+                    :name="item.name"
+                    @click="onClickPlaylist(item.id)"
                   >
                     <template v-slot:desc>
                       <div class="desc">
-                        <Icon
-                          :size="12"
-                          color="shallow"
-                          type="play"
-                        />
-                        <p class="count">{{formatNumber(simiPlaylist.playCount)}}</p>
+                        <p class="count">{{formatNumber(item.playCount)}}</p>
                       </div>
                     </template>
-                  </Card>
+                  </L-Card>
                 </div>
-              </div> -->
+              </div>
               <!-- <div
                 class="simi-songs"
                 v-if="simiSongs.length"
@@ -122,8 +117,10 @@
 
 <script setup lang='ts'>
 import { getSimiSongs, getLyric, getSimiPlaylists } from '@/api'
-import { getImgUrl, createSong } from '@/utils'
+import { getImgUrl, createSong, formatNumber } from '@/utils'
 import { useMusicStore } from '@/store/music'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const musicStore = useMusicStore()
 const hasCurrentSong = computed(() => musicStore.hasCurrentSong)
 const currentSong = computed(() => musicStore.currentSong)
@@ -152,7 +149,18 @@ const updateLyric = async () => {
 }
 
 const onGoMv = () => {
+  musicStore.isPlayerShow = false
+  router.push({
+    path: `/mv/${currentSong.value.id}`
+  })
+}
 
+const onClickPlaylist = (id: string) => {
+  console.log('id', id)
+  musicStore.isPlayerShow = false
+  router.push({
+    path: `/playlist/${id}`
+  })
 }
 
 const lyricWithTranslation = computed(() => {
@@ -211,18 +219,20 @@ function lyricParser(lyric: any) {
   }
 }
 
-const simiPlaylist = ref([])
+const simiPlaylist = ref<any[]>([])
 const simiSong = ref([])
 const simiLoading = ref(false)
 const updateSimi = async () => {
   simiLoading.value = true
   const [simiPlaylists, simiSongs] = await Promise.all([
     getSimiPlaylists(currentSong.value.id),
-    getSimiSongs(currentSong.value.id!, {})
+    getSimiSongs(currentSong.value.id!)
   ]).finally(() => {
     simiLoading.value = false
   }) as any
-  simiPlaylist.value = simiPlaylists
+  simiPlaylist.value = simiPlaylists.playlists
+  console.log('simiPlaylist', simiPlaylist.value);
+  
   console.log('simiSongs', simiSongs)
   simiSong.value = simiSongs.songs.map((song: any) => {
     const {

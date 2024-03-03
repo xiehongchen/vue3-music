@@ -19,7 +19,16 @@
       </template>
     </el-table-column>
     <el-table-column prop="name" lable="">
-
+      <template #default="scope">
+        <div style="display: flex;">
+          <div>{{ scope.row.name }}</div>
+          <span
+            v-if="scope.row.mvId"
+            @click="onGoMv(scope.row.mvId)"
+            class="mv-icon"
+          >MV</span>
+        </div>
+      </template>
     </el-table-column>
     <el-table-column prop="artistsText" label=""></el-table-column>
     <el-table-column prop="albumName" label=""></el-table-column>
@@ -36,20 +45,32 @@
 <script setup lang='ts'>
 import { pad, getImgUrl, formatTime } from '@/utils'
 import { useMusicStore } from '@/store/music'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const musicStore = useMusicStore()
-defineProps({
+const props = defineProps({
   songList: {
     type: Array,
     default: []
   }
 })
 
+
 const isActiveSong = (song: any) => {
   return song.id === musicStore.currentSong
 }
 
 const start = (song: any) => {
+  console.log('props.songList', props.songList)
+  const list = props.songList.filter((item: any) => item.mvId)
+  console.log('list', list)
   musicStore.startSong(song)
+}
+const onGoMv = (id: string) => {
+  musicStore.isPlayerShow = false
+  router.push({
+    path: `/mv/${id}`
+  })
 }
 </script>
 
@@ -107,11 +128,15 @@ const start = (song: any) => {
       overflow: hidden;
       @include text-ellipsis;
     }
-
-    .mv-icon {
-      width: 24px;
-      margin-left: 4px;
-    }
+  }
+  .mv-icon {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px;
+    border: 1px solid currentColor;
+    border-radius: 2px;
+    color: red;
+    cursor: pointer;
   }
 }
 </style>

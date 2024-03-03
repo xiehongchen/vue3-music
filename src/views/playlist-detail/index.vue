@@ -36,7 +36,7 @@
       <el-input
         class="input"
         placeholder="搜索歌单音乐"
-        prefix-icon="el-icon-search"
+        suffix-icon="search"
         v-model="searchValue"
       ></el-input>
     </div>
@@ -58,7 +58,7 @@ import { createSong, getImgUrl, formatDate } from '@/utils';
 import { useMusicStore } from '@/store/music'
 const musicStore = useMusicStore()
 const route = useRoute()
-const id = route.params?.id
+const id = computed(() => route.params.id)
 const tabs = ref(["歌曲列表", "评论"])
 const activeTab = ref(0)
 const searchValue = ref('')
@@ -69,11 +69,13 @@ const filteredSongs = computed(() => songlist.value.filter(({ name, artistsText,
   return `${name}${artistsText}${albumName}`.toLowerCase().includes(searchValue.value.toLowerCase())
 }))
 
+
 onMounted(() => {
   init()
 })
 const init = async () => {
-  const { playlist } = await getListDetail({id}) as any
+  console.log('id', id.value)
+  const { playlist } = await getListDetail({id: id.value}) as any
   list.value = playlist
   const trackIds = playlist.trackIds.map((item: any) => item.id)
   const songDetails = await getSongDetail(trackIds.slice(0, 500)) as any
@@ -97,6 +99,11 @@ const playAll = () => {
   musicStore.startSong(songlist.value[0])
 }
 
+watch(() => route.params.id, (newId, oldId) => {
+  if (oldId !== newId && newId !== '0') {
+    init()
+  }
+})
 </script>
 
 <style lang="scss" scoped>
@@ -197,7 +204,7 @@ const playAll = () => {
     border-bottom: 1px solid #fff;
 
     .input {
-      width: 125px;
+      width: 300px;
 
     }
   }
