@@ -48,7 +48,7 @@ import { useMusicStore } from '@/store/music'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const musicStore = useMusicStore()
-const props = defineProps({
+defineProps({
   songList: {
     type: Array,
     default: []
