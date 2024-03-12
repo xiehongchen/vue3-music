@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import axios from '@/utils/axios'
 
 // 获取音乐url
 export const getSongUrl = (id: string) => request.get(`/song/url?id=${id}`)
@@ -13,4 +14,6 @@ export const getTopSongs = (type: number) => request.get(`/top/song?type=${type}
 export const getSimiSongs = (id: string) => request.get(`/simi/song?id=${id}`)
 
 // 歌词
-export const getLyric = (id: string) => request.get(`/lyric?id=${id}`)
+export const getLyric = (id: string) => axios.get({
+  url: `/lyric?id=${id}`
+})
